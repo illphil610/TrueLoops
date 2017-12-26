@@ -4,25 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.newwesterndev.trueloops.MainActivity">
+    tools:context=".RecordActivity">
 
     <View
-        android:id="@+id/main_bottom_view"
+        android:id="@+id/bottom_view"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
         android:layout_gravity="bottom"
+        android:layout_height="300dp"
         android:background="@color/colorPrimaryText"
-        android:elevation="8dp"
         android:transitionName="bottom_view"/>
 
     <ImageButton
-        android:id="@+id/main_record_button"
+        android:id="@+id/detail_record_button"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="175dp"
         android:background="@drawable/rounded_record_button"
         android:elevation="16dp"
         android:src="@drawable/ic_fiber_manual_record_white_24dp"
-        android:transitionName="record_button" />
+        android:transitionName="record_button"/>
 
 </FrameLayout>
