@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun startRecordActivity(){
+    private fun startRecordActivity(){
         val i = Intent(this, RecordActivity::class.java)
 
         val pairOne: Pair<View, String> = Pair(main_record_button, "record_button")

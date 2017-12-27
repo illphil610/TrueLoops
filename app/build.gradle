@@ -45,6 +45,8 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile "io.reactivex.rxjava2:rxandroid:2.0.1"
 
+    compile 'com.tyorikan:voice-recording-visualizer:1.0.3@aar'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

@@ -7,19 +7,29 @@
     tools:context=".RecordActivity">
 
     <View
-        android:id="@+id/bottom_view"
+        android:id="@+id/detail_bottom_view"
         android:layout_width="match_parent"
         android:layout_gravity="bottom"
-        android:layout_height="300dp"
+        android:layout_height="210dp"
         android:background="@color/colorPrimaryText"
         android:transitionName="bottom_view"/>
+
+    <com.tyorikan.voicerecordingvisualizer.VisualizerView
+        android:id="@+id/visualizer"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom"
+        android:background="@android:color/transparent"
+        app:numColumns="100"
+        app:renderColor="@color/colorPrimary"
+        app:renderRange="both" />
 
     <ImageButton
         android:id="@+id/detail_record_button"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="175dp"
+        android:layout_marginBottom="125dp"
         android:background="@drawable/rounded_record_button"
         android:elevation="16dp"
         android:src="@drawable/ic_fiber_manual_record_white_24dp"
