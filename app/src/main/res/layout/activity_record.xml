@@ -46,4 +46,15 @@
         android:elevation="16dp"
         android:src="@drawable/ic_play_arrow_white_24dp"/>
 
+    <ImageButton
+        android:id="@+id/detail_metronome_button"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="125dp"
+        android:layout_marginLeft="120dp"
+        android:background="@android:color/transparent"
+        android:elevation="16dp"
+        android:src="@drawable/ic_schedule_white_24dp"/>
+
 </FrameLayout>

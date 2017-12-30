@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import com.newwesterndev.trueloops.model.PlaybackSetup
+import com.newwesterndev.trueloops.modules.PlaybackModule
+import com.newwesterndev.trueloops.utils.DaggerPlaybackComponent
 import com.tyorikan.voicerecordingvisualizer.RecordingSampler
 import kotlinx.android.synthetic.main.activity_record.*
 import java.io.File
@@ -16,7 +19,8 @@ class RecordActivity : RecordingSampler.CalculateVolumeListener, AppCompatActivi
     private var mRecorder: MediaRecorder? = null
     private var mPlayer: MediaPlayer? = null
     private var mRecordingSampler: RecordingSampler? = null
-    private lateinit var mFile: File
+    private var mPlayback: PlaybackSetup.PlaybackRecording
+    private var mFile: File
     private var mIsRecording = false
     private var mIsPlaying = false
 
@@ -24,9 +28,6 @@ class RecordActivity : RecordingSampler.CalculateVolumeListener, AppCompatActivi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record)
         startRecordingSampler()
-
-        val path = File (Environment.getExternalStorageDirectory().absolutePath)
-        mFile = File.createTempFile ("temporary", ".3gp", path)
 
         detail_record_button.setOnClickListener({_ ->
             if(!mIsRecording){
@@ -47,6 +48,21 @@ class RecordActivity : RecordingSampler.CalculateVolumeListener, AppCompatActivi
                 startRecordingSampler()
             }
         })
+
+        detail_metronome_button.setOnClickListener({_ ->
+           PlaybackSettingsDialog(this, mPlayback).show()
+        })
+    }
+
+    init{
+        val path = File (Environment.getExternalStorageDirectory().absolutePath)
+        mFile = File.createTempFile ("temporary", ".3gp", path)
+
+        val daggerPRComponent = DaggerPlaybackComponent.builder()
+                .playbackModule(PlaybackModule())
+                .build()
+
+        mPlayback = daggerPRComponent.getDefaultPlaybackSettings()
     }
 
     @Throws(IOException::class)
