@@ -3,6 +3,7 @@ package com.newwesterndev.trueloops
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
@@ -13,6 +14,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECORD_AUDIO,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 10)
 
         main_record_button.setOnClickListener{_ ->
             startRecordActivity()
