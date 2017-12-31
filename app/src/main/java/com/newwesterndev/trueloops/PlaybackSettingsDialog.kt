@@ -3,9 +3,9 @@ package com.newwesterndev.trueloops
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import com.newwesterndev.trueloops.model.PlaybackSetup
+import com.newwesterndev.trueloops.model.Model
 
-class PlaybackSettingsDialog(context: Context, playbackRecording: PlaybackSetup.PlaybackRecording): Dialog(context) {
+class PlaybackSettingsDialog(context: Context, playbackRecording: Model.PlaybackRecording): Dialog(context) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

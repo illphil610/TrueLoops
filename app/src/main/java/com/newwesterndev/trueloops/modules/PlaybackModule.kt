@@ -1,6 +1,6 @@
 package com.newwesterndev.trueloops.modules
 
-import com.newwesterndev.trueloops.model.PlaybackSetup
+import com.newwesterndev.trueloops.model.Model
 import dagger.Module
 import dagger.Provides
 
@@ -8,15 +8,15 @@ import dagger.Provides
 class PlaybackModule{
 
     @Provides
-    fun playbackRecording(metronome: PlaybackSetup.Metronome): PlaybackSetup.PlaybackRecording{
-        return PlaybackSetup.PlaybackRecording(4,
+    fun playbackRecording(metronome: Model.Metronome): Model.PlaybackRecording{
+        return Model.PlaybackRecording(4,
                 1,
                 metronome)
     }
 
     @Provides
-    fun metronome(): PlaybackSetup.Metronome{
-        return PlaybackSetup.Metronome(120,
+    fun metronome(): Model.Metronome{
+        return Model.Metronome(120,
                 4,
                 4,
                 true)

@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
-import com.newwesterndev.trueloops.model.PlaybackSetup
+import com.newwesterndev.trueloops.model.Model
 import com.newwesterndev.trueloops.modules.PlaybackModule
 import com.newwesterndev.trueloops.utils.DaggerPlaybackComponent
 import com.tyorikan.voicerecordingvisualizer.RecordingSampler
@@ -19,7 +19,7 @@ class RecordActivity : RecordingSampler.CalculateVolumeListener, AppCompatActivi
     private var mRecorder: MediaRecorder? = null
     private var mPlayer: MediaPlayer? = null
     private var mRecordingSampler: RecordingSampler? = null
-    private var mPlayback: PlaybackSetup.PlaybackRecording
+    private var mPlayback: Model.PlaybackRecording
     private var mFile: File
     private var mIsRecording = false
     private var mIsPlaying = false
@@ -49,7 +49,7 @@ class RecordActivity : RecordingSampler.CalculateVolumeListener, AppCompatActivi
             }
         })
 
-        detail_metronome_button.setOnClickListener({_ ->
+        detail_settings_button.setOnClickListener({_ ->
            PlaybackSettingsDialog(this, mPlayback).show()
         })
     }
