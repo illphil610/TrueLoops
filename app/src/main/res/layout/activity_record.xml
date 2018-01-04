@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".RecordActivity">
 
+    <ListView
+        android:id="@+id/songTrackList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
     <View
         android:id="@+id/detail_bottom_view"
         android:layout_width="match_parent"

@@ -25,13 +25,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun startRecordActivity(){
         val i = Intent(this, RecordActivity::class.java)
-
         val pairOne: Pair<View, String> = Pair(main_record_button, "record_button")
         val pairTwo: Pair<View, String> = Pair(main_bottom_view, "bottom_view")
-
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                pairOne, pairTwo)
-
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pairOne, pairTwo)
         startActivity(i, options.toBundle())
     }
 }
