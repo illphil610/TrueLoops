@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import com.newwesterndev.trueloops.model.Model
 
@@ -17,9 +18,11 @@ class TrackListAdapter(private var activity: Activity, private var tracks: Array
 
     private class ViewHolder(row: View?) {
         var mTrackName: TextView? = null
+        var mTrackImage: ImageView? = null
 
         init {
             mTrackName = row?.findViewById(R.id.trackName)
+            mTrackImage = row?.findViewById(R.id.trackImage)
         }
     }
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
