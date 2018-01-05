@@ -22,7 +22,7 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
     private var mPlayer: MediaPlayer? = null
     private var mRecordingSampler: RecordingSampler? = null
     private var mPlayback: Model.PlaybackRecording
-    private var mFile: File
+    private var mFile: File? = null
     private var mIsRecording = false
     private var mIsPlaying = false
     private var mSongTrackListView: ListView? = null
@@ -38,8 +38,8 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
         mTrackArrayList = ArrayList()
 
         // Testing that tracks will display in the viewholder
-        var mTrack = Track("Guitar 1", "")
-        mTrackArrayList?.add(mTrack)
+        //var mTrack = Track("Guitar 1", "")
+        //mTrackArrayList?.add(mTrack)
 
         mTrackListAdapter = TrackListAdapter(this, mTrackArrayList!!)
         mSongTrackListView?.adapter = mTrackListAdapter
@@ -71,8 +71,8 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
     }
 
     init {
-        val path = File (Environment.getExternalStorageDirectory().absolutePath)
-        mFile = File.createTempFile ("temporary", ".3gp", path)
+        //val path = File (Environment.getExternalStorageDirectory().absolutePath)
+        //mFile = File.createTempFile ("temporary", ".3gp", path)
 
         val daggerPRComponent = DaggerPlaybackComponent.builder()
                 .playbackModule(PlaybackModule())
@@ -102,10 +102,13 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
         detail_record_button.setImageResource(R.drawable.ic_stop_white_24dp)
         mIsRecording = true
 
+        val path = File (Environment.getExternalStorageDirectory().absolutePath)
+        mFile = File.createTempFile ("temporary", ".3gp", path)
+
         mRecorder = MediaRecorder()
         mRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
         mRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-        mRecorder?.setOutputFile(mFile.absolutePath)
+        mRecorder?.setOutputFile(mFile?.absolutePath)
         mRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
 
         mRecorder?.prepare()
@@ -113,6 +116,11 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
     }
 
     private fun stopRecording(){
+
+        var currentTrack = Track("test name", mFile?.absolutePath.toString())
+        mTrackArrayList?.add(currentTrack)
+        mTrackListAdapter?.notifyDataSetChanged()
+
         detail_record_button.setImageResource(R.drawable.ic_fiber_manual_record_white_24dp)
         mIsRecording = false
         mRecorder?.stop()
@@ -126,7 +134,7 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
         detail_play_button.setImageResource(R.drawable.ic_stop_white_24dp)
         mIsPlaying = true
         mPlayer = MediaPlayer()
-        mPlayer?.setDataSource(mFile.absolutePath)
+        mPlayer?.setDataSource(mFile?.absolutePath)
         mPlayer?.prepare()
         mPlayer?.start()
 
