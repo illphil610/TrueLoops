@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".RecordActivity">
 
-    <ListView
-        android:id="@+id/songTrackList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </ListView>
-
     <View
         android:id="@+id/detail_bottom_view"
         android:layout_width="match_parent"
@@ -64,4 +57,9 @@
         android:elevation="16dp"
         android:src="@drawable/ic_settings_white_24dp"/>
 
+    <ListView
+        android:id="@+id/songTrackList"
+        android:layout_width="match_parent"
+        android:layout_height="485dp">
+    </ListView>
 </FrameLayout>
