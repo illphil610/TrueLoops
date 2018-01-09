@@ -13,6 +13,7 @@ import com.newwesterndev.trueloops.model.Model
 import com.newwesterndev.trueloops.model.Model.Track
 import com.newwesterndev.trueloops.modules.PlaybackModule
 import com.newwesterndev.trueloops.utils.DaggerPlaybackComponent
+import com.newwesterndev.trueloops.utils.TrackListAdapter
 import com.newwesterndev.trueloops.utils.Utility
 import com.tyorikan.voicerecordingvisualizer.RecordingSampler
 import kotlinx.android.synthetic.main.activity_record.*

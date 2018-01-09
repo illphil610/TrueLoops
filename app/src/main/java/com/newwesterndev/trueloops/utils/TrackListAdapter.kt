@@ -1,4 +1,4 @@
-package com.newwesterndev.trueloops
+package com.newwesterndev.trueloops.utils
 
 import android.app.Activity
 import android.content.Context
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.newwesterndev.trueloops.R
 import com.newwesterndev.trueloops.model.Model
 
 /**

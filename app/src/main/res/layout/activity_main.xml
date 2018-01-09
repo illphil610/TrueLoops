@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/black"
     tools:context="com.newwesterndev.trueloops.MainActivity">
 
     <ListView
         android:id="@+id/songList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent"></ListView>
 
     <View
         android:id="@+id/main_bottom_view"
@@ -19,7 +19,7 @@
         android:layout_gravity="bottom"
         android:background="@color/colorPrimaryText"
         android:elevation="8dp"
-        android:transitionName="bottom_view"/>
+        android:transitionName="bottom_view" />
 
     <ImageButton
         android:id="@+id/main_record_button"

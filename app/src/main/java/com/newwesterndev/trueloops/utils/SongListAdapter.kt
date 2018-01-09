@@ -2,6 +2,7 @@ package com.newwesterndev.trueloops.utils
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.newwesterndev.trueloops.R
+import com.newwesterndev.trueloops.R.color.colorPrimaryLight
 import com.newwesterndev.trueloops.model.Model
 
 /**
@@ -41,6 +43,8 @@ class SongListAdapter(private var activity: Activity, private var songs: ArrayLi
 
         var song = songs?.get(position)
         viewHolder.mSongName?.text = song?.songName
+        viewHolder.mSongName?.setTextColor(Color.parseColor("#8c9eff"))
+        viewHolder.mSongName?.textSize = 30F
 
         return view as View
     }
