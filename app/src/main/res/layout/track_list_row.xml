@@ -6,7 +6,7 @@
 
     <ImageView
         android:id="@+id/trackImage"
-        android:src="@drawable/ic_play_arrow_white_24dp"
+        android:src="@drawable/ic_audiotrack_black_24dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_margin="10dp" />
@@ -22,8 +22,8 @@
             android:id="@+id/trackName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/autour_one"
             android:text="Name"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
     </LinearLayout>
 </RelativeLayout>

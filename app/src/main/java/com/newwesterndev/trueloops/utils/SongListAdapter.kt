@@ -43,8 +43,8 @@ class SongListAdapter(private var activity: Activity, private var songs: ArrayLi
 
         var song = songs?.get(position)
         viewHolder.mSongName?.text = song?.songName
-        viewHolder.mSongName?.setTextColor(Color.parseColor("#8c9eff"))
-        viewHolder.mSongName?.textSize = 30F
+        //viewHolder.mSongName?.setTextColor(Color.parseColor("black"))
+        //viewHolder.mSongName?.textSize = 30F
 
         return view as View
     }
