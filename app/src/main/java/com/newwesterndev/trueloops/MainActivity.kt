@@ -36,9 +36,12 @@ class MainActivity : AppCompatActivity() {
         val song = intent.extras?.get("Song")
         Log.v("Song", song.toString())
 
-        if (song != null)
-            mSongArrayList?.add(song as Model.Song)
-            mSongListAdapter?.notifyDataSetChanged()
+        when {
+            song != null -> {
+                mSongArrayList?.add(song as Model.Song)
+                mSongListAdapter?.notifyDataSetChanged()
+            }
+        }
 
         mSongArrayList?.add(Model.Song("test", ArrayList()))
         main_record_button.setOnClickListener{_ ->
