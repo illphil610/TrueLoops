@@ -44,7 +44,8 @@
         android:layout_marginRight="120dp"
         android:background="@drawable/rounded_play_button"
         android:elevation="16dp"
-        android:src="@drawable/ic_play_arrow_white_24dp"/>
+        android:src="@drawable/ic_play_arrow_white_24dp"
+        android:transitionName="play_button"/>
 
     <ImageButton
         android:id="@+id/detail_settings_button"
@@ -55,10 +56,11 @@
         android:layout_marginLeft="120dp"
         android:background="@drawable/rounded_settings_button"
         android:elevation="16dp"
-        android:src="@drawable/ic_settings_white_24dp"/>
+        android:src="@drawable/ic_settings_white_24dp"
+        android:transitionName="settings_button"/>
 
     <ListView
-        android:id="@+id/songTrackList"
+        android:id="@+id/trackList"
         android:layout_width="match_parent"
         android:layout_height="485dp">
     </ListView>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/save_song_button"
+        android:icon="@drawable/ic_playlist_add_white_24dp"
+        android:title="Save Song"
+        app:showAsAction="always"
+        android:orderInCategory="0"/>
+</menu>

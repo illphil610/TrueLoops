@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context="com.newwesterndev.trueloops.MainActivity">
 
+    <ListView
+        android:id="@+id/songList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+
     <View
         android:id="@+id/main_bottom_view"
         android:layout_width="match_parent"

@@ -1,16 +1,19 @@
 package com.newwesterndev.trueloops
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ListView
 import com.newwesterndev.trueloops.model.Model
 import com.newwesterndev.trueloops.model.Model.Track
 import com.newwesterndev.trueloops.modules.PlaybackModule
 import com.newwesterndev.trueloops.utils.DaggerPlaybackComponent
+import com.newwesterndev.trueloops.utils.Utility
 import com.tyorikan.voicerecordingvisualizer.RecordingSampler
 import kotlinx.android.synthetic.main.activity_record.*
 import java.io.File
@@ -28,38 +31,42 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
     private var mSongTrackListView: ListView? = null
     private var mTrackArrayList: ArrayList<Track>? = null
     private var mTrackListAdapter: TrackListAdapter? = null
+    private var mUtility: Utility? = null
+
+    init {
+        mUtility = Utility()
+        mTrackArrayList = ArrayList()
+        val daggerPRComponent = DaggerPlaybackComponent.builder()
+                .playbackModule(PlaybackModule())
+                .build()
+        mPlayback = daggerPRComponent.getDefaultPlaybackSettings()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record)
         //startRecordingSampler()
 
-        mSongTrackListView = findViewById(R.id.songTrackList)
-        mTrackArrayList = ArrayList()
-
-        // Testing that tracks will display in the viewholder
-        //var mTrack = Track("Guitar 1", "")
-        //mTrackArrayList?.add(mTrack)
-
-        mTrackListAdapter = TrackListAdapter(this, mTrackArrayList!!)
+        mSongTrackListView = findViewById(R.id.trackList)
+        mTrackListAdapter = TrackListAdapter(this, mTrackArrayList)
         mSongTrackListView?.adapter = mTrackListAdapter
         mTrackListAdapter?.notifyDataSetChanged()
 
         detail_record_button.setOnClickListener({_ ->
-            if(!mIsRecording){
+            if (!mIsRecording){
                 //stopRecordingSampler()
                 startRecording()
-            }else{
+            } else {
                 stopRecording()
                 //startRecordingSampler()
             }
         })
 
         detail_play_button.setOnClickListener({_ ->
-            if(!mIsPlaying && !mIsRecording){
+            if (!mIsPlaying && !mIsRecording) {
                 //stopRecordingSampler()
                 startPlaying()
-            }else{
+            } else {
                 stopPlaying()
                 //startRecordingSampler()
             }
@@ -70,16 +77,22 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
         })
     }
 
-    init {
-        //val path = File (Environment.getExternalStorageDirectory().absolutePath)
-        //mFile = File.createTempFile ("temporary", ".3gp", path)
-
-        val daggerPRComponent = DaggerPlaybackComponent.builder()
-                .playbackModule(PlaybackModule())
-                .build()
-
-        mPlayback = daggerPRComponent.getDefaultPlaybackSettings()
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.record_menu, menu)
+        return true
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.save_song_button -> {
+            val song = mTrackArrayList?.let { mUtility?.saveCurrentTrackListAsSong(it) }
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("Song", song)
+            startActivity(intent)
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
 
     /*
     @Throws(IOException::class)
@@ -101,40 +114,38 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
     private fun startRecording(){
         detail_record_button.setImageResource(R.drawable.ic_stop_white_24dp)
         mIsRecording = true
+        mFile = mUtility?.createUniqueTrackFile()
+        Log.v("testing unique file", mFile.toString())
 
-        val path = File (Environment.getExternalStorageDirectory().absolutePath)
-        mFile = File.createTempFile ("temporary", ".3gp", path)
-
+        // Abstract this as a function in Utility as well
         mRecorder = MediaRecorder()
         mRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
         mRecorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
         mRecorder?.setOutputFile(mFile?.absolutePath)
         mRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-
         mRecorder?.prepare()
         mRecorder?.start()
     }
 
     private fun stopRecording(){
-
-        var currentTrack = Track("test name", mFile?.absolutePath.toString())
-        mTrackArrayList?.add(currentTrack)
-        mTrackListAdapter?.notifyDataSetChanged()
-
         detail_record_button.setImageResource(R.drawable.ic_fiber_manual_record_white_24dp)
         mIsRecording = false
         mRecorder?.stop()
         mRecorder?.reset()
         mRecorder?.release()
 
-        // save recording to the track list
+        val currentTrack = Track("New Track", mFile?.absolutePath.toString())
+        mTrackArrayList = mUtility?.updateNewTrackToTrackList(currentTrack, mTrackArrayList)
+        mTrackListAdapter?.notifyDataSetChanged()
+        // Pop up dialog to get track name
     }
+
     @Throws(IOException::class)
     private fun startPlaying(){
         detail_play_button.setImageResource(R.drawable.ic_stop_white_24dp)
         mIsPlaying = true
         mPlayer = MediaPlayer()
-        mPlayer?.setDataSource(mFile?.absolutePath)
+        mPlayer?.setDataSource(mFile?.absolutePath.toString())
         mPlayer?.prepare()
         mPlayer?.start()
 
@@ -146,19 +157,20 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
     }
 
     private fun stopPlaying(){
+        detail_play_button.setImageResource(R.drawable.ic_play_arrow_white_24dp)
+        mIsPlaying = false
         mPlayer?.release()
         mPlayer = null
     }
 
     override fun onStop() {
         //stopRecordingSampler()
-
-        if(mIsRecording){
+        if (mIsRecording) {
             mRecorder?.stop()
             mRecorder?.release()
         }
 
-        if(mIsPlaying){
+        if (mIsPlaying) {
             mPlayer?.stop()
             mPlayer?.release()
         }
@@ -170,8 +182,4 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
         Log.d("currentVolume ",volume.toString())
     }
     */
-
-    private fun saveRecordingToList() {
-
-    }
 }

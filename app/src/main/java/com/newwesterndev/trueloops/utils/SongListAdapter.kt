@@ -1,4 +1,4 @@
-package com.newwesterndev.trueloops
+package com.newwesterndev.trueloops.utils
 
 import android.app.Activity
 import android.content.Context
@@ -8,20 +8,21 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.newwesterndev.trueloops.R
 import com.newwesterndev.trueloops.model.Model
 
 /**
- * Created by Phil on 1/4/2018.
+ * Created by Phil on 1/8/2018.
  */
-class TrackListAdapter(private var activity: Activity, private var tracks: ArrayList<Model.Track>?) : BaseAdapter() {
+class SongListAdapter(private var activity: Activity, private var songs: ArrayList<Model.Song>?) : BaseAdapter() {
 
     private class ViewHolder(row: View?) {
-        var mTrackName: TextView? = null
-        var mTrackImage: ImageView? = null
+        var mSongName: TextView? = null
+        var mSongImage: ImageView? = null
 
         init {
-            mTrackName = row?.findViewById(R.id.trackName)
-            mTrackImage = row?.findViewById(R.id.trackImage)
+            mSongName = row?.findViewById(R.id.trackName)
+            mSongImage = row?.findViewById(R.id.trackImage)
         }
     }
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -38,14 +39,14 @@ class TrackListAdapter(private var activity: Activity, private var tracks: Array
             viewHolder = view.tag as ViewHolder
         }
 
-        var track = tracks?.get(position)
-        viewHolder.mTrackName?.text = track?.trackName
+        var song = songs?.get(position)
+        viewHolder.mSongName?.text = song?.songName
 
         return view as View
     }
 
-    override fun getItem(position: Int): Model.Track? {
-        return tracks?.get(position)
+    override fun getItem(position: Int): Model.Song? {
+        return songs?.get(position)
     }
 
     override fun getItemId(position: Int): Long {
@@ -53,6 +54,6 @@ class TrackListAdapter(private var activity: Activity, private var tracks: Array
     }
 
     override fun getCount(): Int {
-        return tracks?.size!!
+        return songs?.size!!
     }
 }

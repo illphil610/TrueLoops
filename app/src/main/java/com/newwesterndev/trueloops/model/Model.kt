@@ -1,6 +1,7 @@
 package com.newwesterndev.trueloops.model
 
-import java.io.File
+import android.os.Parcelable
+import java.io.Serializable
 
 object Model {
 
@@ -16,9 +17,9 @@ object Model {
                          var playDuringRecording: Boolean)
 
     // Creates a track which will contain a path to the required audio file
-    data class Track(var trackName : String, var filePath: String)
+    data class Track(var trackName : String, var filePath: String) : Serializable
 
     // Creates a Song object which will contain an ArrayList of file paths (Tracks) to the specific
     // audio tracks that make up the Song.
-    data class Song(var tracks: ArrayList<Track>)
+    data class Song(var songName: String, var tracks: ArrayList<Track>) : Serializable
 }
