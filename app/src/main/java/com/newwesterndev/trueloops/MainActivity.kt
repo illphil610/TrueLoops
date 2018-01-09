@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        mSongArrayList?.add(Model.Song("test", ArrayList()))
         main_record_button.setOnClickListener{_ ->
             startRecordActivity()
         }
