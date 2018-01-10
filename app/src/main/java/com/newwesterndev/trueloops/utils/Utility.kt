@@ -15,10 +15,6 @@ class Utility {
         return mFile
     }
 
-    fun saveCurrentTrackListAsSong(tracks: ArrayList<Model.Track>): Model.Song {
-        return Model.Song("Song Name", tracks)
-    }
-
     fun updateNewTrackToTrackList(newTrack : Model.Track, trackList : ArrayList<Model.Track>?) : ArrayList<Model.Track>? {
         trackList?.add(newTrack)
         return trackList

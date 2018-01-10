@@ -60,8 +60,9 @@
         android:transitionName="settings_button"/>
 
     <ListView
-        android:id="@+id/trackList"
+        android:id="@+id/detail_track_list"
         android:layout_width="match_parent"
-        android:layout_height="485dp">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="210dp">
     </ListView>
 </FrameLayout>

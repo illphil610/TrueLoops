@@ -5,10 +5,14 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.animation.AccelerateInterpolator
 import android.widget.ListView
+import com.newwesterndev.trueloops.db.DbManager
 import com.newwesterndev.trueloops.model.Model
 import com.newwesterndev.trueloops.model.Model.Track
 import com.newwesterndev.trueloops.modules.PlaybackModule
@@ -48,7 +52,9 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
         setContentView(R.layout.activity_record)
         //startRecordingSampler()
 
-        mSongTrackListView = findViewById(R.id.trackList)
+        slideUp(detail_settings_button)
+        slideUp(detail_play_button)
+        mSongTrackListView = findViewById(R.id.detail_track_list)
         mTrackListAdapter = TrackListAdapter(this, mTrackArrayList)
         mSongTrackListView?.adapter = mTrackListAdapter
         mTrackListAdapter?.notifyDataSetChanged()
@@ -85,9 +91,14 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.save_song_button -> {
-            val song = mTrackArrayList?.let { mUtility?.saveCurrentTrackListAsSong(it) }
+
+            val dbManager = DbManager(this)
+            dbManager.songToDb(Model.Song("New Song",
+                    mPlayback.bars, mPlayback.measures,
+                    mPlayback.metronome.bpm, mPlayback.metronome.timeSigOne, mPlayback.metronome.timeSigTwo,
+                    mPlayback.metronome.playDuringRecording.toString()), mTrackArrayList!!)
+
             val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("Song", song)
             startActivity(intent)
             true
         }
@@ -183,4 +194,20 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
         Log.d("currentVolume ",volume.toString())
     }
     */
+
+    fun slideUp(v: View) {
+        val metrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(metrics)
+
+        v.translationY = metrics.heightPixels.toFloat()
+        try {
+            v.animate().setInterpolator(AccelerateInterpolator())
+                    .setDuration(600)
+                    .translationYBy((-metrics.heightPixels).toFloat())
+                    .start()
+        } catch (ex: Exception) {
+
+        }
+
+    }
 }
