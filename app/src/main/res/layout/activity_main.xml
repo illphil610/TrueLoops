@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
     tools:context="com.newwesterndev.trueloops.MainActivity">
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/songList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/background_light"></ListView>
+        android:layout_marginBottom="50dp"/>
 
     <View
         android:id="@+id/main_bottom_view"

@@ -59,10 +59,9 @@
         android:src="@drawable/ic_settings_white_24dp"
         android:transitionName="settings_button"/>
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/detail_track_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="210dp">
-    </ListView>
+        android:layout_marginBottom="210dp"/>
 </FrameLayout>

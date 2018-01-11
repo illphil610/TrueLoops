@@ -8,19 +8,13 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.v4.util.Pair
-import android.util.Log
-import android.view.Display
-import android.widget.ListView
+import android.support.v7.widget.LinearLayoutManager
+import android.widget.LinearLayout
 import com.newwesterndev.trueloops.db.DbManager
-import com.newwesterndev.trueloops.model.Model
 import com.newwesterndev.trueloops.model.SQLModel
-import com.newwesterndev.trueloops.utils.SongListAdapter
-import kotlinx.android.synthetic.main.activity_record.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var mSongListView: ListView? = null
-    private var mSongListAdapter: SongListAdapter? = null
     private var mSongArrayList: ArrayList<SQLModel.Song?> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,11 +24,10 @@ class MainActivity : AppCompatActivity() {
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECORD_AUDIO,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 10)
 
-        var mDbManager = DbManager(applicationContext)
+        val mDbManager = DbManager(applicationContext)
         mSongArrayList = mDbManager.getSongs()
-        mSongListView = findViewById(R.id.songList)
-        mSongListAdapter = SongListAdapter(this, mSongArrayList)
-        songList.adapter = mSongListAdapter
+        songList.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        songList.adapter = com.newwesterndev.trueloops.utils.adapters.SongListAdapter(this, mSongArrayList)
 
         main_record_button.setOnClickListener{_ ->
             startRecordActivity()

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">True Loops</string>
+
+    <string name="song_name">Loop Name</string>
+
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

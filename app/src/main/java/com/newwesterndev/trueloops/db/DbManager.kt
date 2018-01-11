@@ -5,14 +5,13 @@ import android.util.Log
 import com.newwesterndev.trueloops.model.Model
 import com.newwesterndev.trueloops.model.SQLModel
 import org.jetbrains.anko.db.*
-import java.io.IOException
 
 class DbManager(private val c: Context){
 
     private val songDb = SongDbHelper.getInstance(c)
     private val trackDb = TrackDbHelper.getInstance(c)
 
-    fun songToDb(song: Model.Song, tracks: ArrayList<Model.Track>){
+    fun songToDb(song: Model.Song, tracks: ArrayList<Model.Track?>){
         songDb.use {
             createTable(SongSQLiteContract.TABLE_NAME, true,
                     SongSQLiteContract.COLUMN_ID to INTEGER + PRIMARY_KEY,
@@ -39,10 +38,10 @@ class DbManager(private val c: Context){
                     TrackSQLiteContract.COLUMN_FROM_SONG_NAME to TEXT,
                     TrackSQLiteContract.COLUMN_FILE_PATH to TEXT)
 
-            for(track: Model.Track in tracks) {
+            for(track: Model.Track? in tracks) {
                 insert(TrackSQLiteContract.TABLE_NAME,
                         TrackSQLiteContract.COLUMN_FROM_SONG_NAME to song.name,
-                        TrackSQLiteContract.COLUMN_FILE_PATH to track.filePath)
+                        TrackSQLiteContract.COLUMN_FILE_PATH to track?.filePath)
             }
         }
     }
@@ -95,6 +94,32 @@ class DbManager(private val c: Context){
         }
 
         return trackModel
+    }
+
+    fun doesLoopNameExist(name: String): Boolean{
+        val rowParser = classParser<SQLModel.Song>()
+        var stillGettingSongs = true
+        var doesExist = false
+        var i = 1
+
+        songDb.use {
+            while (stillGettingSongs) {
+                val currentSong = select(SongSQLiteContract.TABLE_NAME)
+                        .whereSimple("(_id = ?)", i.toString())
+                        .parseOpt(rowParser)
+
+                if(currentSong == null){
+                    stillGettingSongs = false
+                }else{
+                    if(currentSong.name == name){
+                        doesExist = true
+                    }
+                }
+                i++
+            }
+        }
+
+        return doesExist
     }
 
 }
