@@ -195,7 +195,7 @@ class RecordActivity : AppCompatActivity() { //RecordingSampler.CalculateVolumeL
     }
     */
 
-    fun slideUp(v: View) {
+    private fun slideUp(v: View) {
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
 

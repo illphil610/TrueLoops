@@ -40,7 +40,6 @@ class TrackListAdapter(private var activity: Activity, private var tracks: Array
         }
 
         var track = tracks?.get(position)
-        viewHolder.mTrackName?.text = track?.trackName
 
         return view as View
     }

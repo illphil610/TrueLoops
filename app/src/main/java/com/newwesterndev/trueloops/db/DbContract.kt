@@ -1,7 +1,7 @@
 package com.newwesterndev.trueloops.db
 
 object SongSQLiteContract{
-    val TABLE_NAME = "songs"
+    val TABLE_NAME = "Songs"
     val COLUMN_ID = "_id"
     val COLUMN_NAME = "name"
     val COLUMN_BARS = "bars"
@@ -13,8 +13,8 @@ object SongSQLiteContract{
 }
 
 object TrackSQLiteContract{
-    val TABLE_NAME = "tracks"
+    val TABLE_NAME = "Tracks"
     val COLUMN_ID = "_id"
-    val COLUMN_FROM_SONG_NAME = "from"
-    val COLUMN_FILE_PATH = "path"
+    val COLUMN_FROM_SONG_NAME = "fromsong"
+    val COLUMN_FILE_PATH = "filepath"
 }

@@ -6,25 +6,26 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import com.newwesterndev.trueloops.R
 import com.newwesterndev.trueloops.R.color.colorPrimaryLight
 import com.newwesterndev.trueloops.model.Model
+import com.newwesterndev.trueloops.model.SQLModel
 
 /**
  * Created by Phil on 1/8/2018.
  */
-class SongListAdapter(private var activity: Activity, private var songs: ArrayList<Model.Song>?) : BaseAdapter() {
+class SongListAdapter(private var activity: Activity, private var songs: ArrayList<SQLModel.Song?>) : BaseAdapter() {
 
     private class ViewHolder(row: View?) {
         var mSongName: TextView? = null
         var mSongImage: ImageView? = null
+        var mSongItemLayout: RelativeLayout? = null
 
         init {
             mSongName = row?.findViewById(R.id.trackName)
             mSongImage = row?.findViewById(R.id.trackImage)
+            mSongItemLayout = row?.findViewById(R.id.song_item_layout)
         }
     }
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -42,14 +43,17 @@ class SongListAdapter(private var activity: Activity, private var songs: ArrayLi
         }
 
         var song = songs?.get(position)
-        viewHolder.mSongName?.text = song?.songName
+        viewHolder.mSongName?.text = song?.name
         //viewHolder.mSongName?.setTextColor(Color.parseColor("black"))
         //viewHolder.mSongName?.textSize = 30F
+        viewHolder.mSongItemLayout?.setOnClickListener({_ ->
+            Toast.makeText(activity.applicationContext, "Hiiiiiii", Toast.LENGTH_SHORT).show()
+        })
 
         return view as View
     }
 
-    override fun getItem(position: Int): Model.Song? {
+    override fun getItem(position: Int): SQLModel.Song? {
         return songs?.get(position)
     }
 

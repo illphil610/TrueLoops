@@ -11,7 +11,9 @@ import android.support.v4.util.Pair
 import android.util.Log
 import android.view.Display
 import android.widget.ListView
+import com.newwesterndev.trueloops.db.DbManager
 import com.newwesterndev.trueloops.model.Model
+import com.newwesterndev.trueloops.model.SQLModel
 import com.newwesterndev.trueloops.utils.SongListAdapter
 import kotlinx.android.synthetic.main.activity_record.*
 
@@ -19,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private var mSongListView: ListView? = null
     private var mSongListAdapter: SongListAdapter? = null
-    private var mSongArrayList: ArrayList<Model.Song>? = null
+    private var mSongArrayList: ArrayList<SQLModel.Song?> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,20 +30,11 @@ class MainActivity : AppCompatActivity() {
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECORD_AUDIO,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 10)
 
-        mSongArrayList = ArrayList()
+        var mDbManager = DbManager(applicationContext)
+        mSongArrayList = mDbManager.getSongs()
         mSongListView = findViewById(R.id.songList)
         mSongListAdapter = SongListAdapter(this, mSongArrayList)
         songList.adapter = mSongListAdapter
-
-        val song = intent.extras?.get("Song")
-        Log.v("Song", song.toString())
-
-        when {
-            song != null -> {
-                mSongArrayList?.add(song as Model.Song)
-                mSongListAdapter?.notifyDataSetChanged()
-            }
-        }
 
         main_record_button.setOnClickListener{_ ->
             startRecordActivity()
