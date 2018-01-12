@@ -1,15 +1,18 @@
 package com.newwesterndev.trueloops.utils.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.newwesterndev.trueloops.MainActivity
 import com.newwesterndev.trueloops.R
+import com.newwesterndev.trueloops.db.DbManager
 import com.newwesterndev.trueloops.model.SQLModel
 import kotlinx.android.synthetic.main.song_list_row.view.*
 
-class SongListAdapter(private val context: Context, private val songs: ArrayList<SQLModel.Song?>):
+class SongListAdapter(private val context: Context, private val songs: ArrayList<SQLModel.Song?>, private val dbManager: DbManager):
         RecyclerView.Adapter<SongListAdapter.ViewHolder>(){
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -22,7 +25,9 @@ class SongListAdapter(private val context: Context, private val songs: ArrayList
         })
 
         holder.deleteButton.setOnClickListener({_ ->
-
+            dbManager.deleteSong(currentSong!!.name)
+            val i = Intent(context, MainActivity::class.java)
+            context.startActivity(i)
         })
     }
 

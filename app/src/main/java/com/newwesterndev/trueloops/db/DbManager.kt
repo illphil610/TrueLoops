@@ -122,4 +122,12 @@ class DbManager(private val c: Context){
         return doesExist
     }
 
+    fun deleteSong(name: String){
+        songDb.use {
+            delete(SongSQLiteContract.TABLE_NAME,
+                    "${SongSQLiteContract.COLUMN_NAME} = {name}",
+                    "name" to name)
+        }
+    }
+
 }

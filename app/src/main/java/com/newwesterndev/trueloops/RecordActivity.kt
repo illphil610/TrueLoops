@@ -28,11 +28,10 @@ import kotlinx.android.synthetic.main.activity_record.*
 import java.io.File
 import java.io.IOException
 
-class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListener, RecordingSampler.CalculateVolumeListener { //RecordingSampler.CalculateVolumeListener
+class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListener{ //RecordingSampler.CalculateVolumeListener
 
     private var mRecorder: MediaRecorder? = null
     private var mPlayer: MediaPlayer? = null
-    private var mRecordingSampler: RecordingSampler? = null
     private var mPlayback: Model.PlaybackRecording
     private var mFile: File? = null
     private var mTrackArrayList: ArrayList<Track?> = ArrayList()
@@ -54,7 +53,6 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record)
-        startRecordingSampler()
 
         slideUp(detail_settings_button)
         slideUp(detail_play_button)
@@ -63,21 +61,17 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
 
         detail_record_button.setOnClickListener({_ ->
             if (!mIsRecording){
-                stopRecordingSampler()
                 startRecording()
             } else {
                 stopRecording()
-                startRecordingSampler()
             }
         })
 
         detail_play_button.setOnClickListener({_ ->
             if (!mIsPlaying && !mIsRecording) {
-                stopRecordingSampler()
                 startPlaying()
             } else {
                 stopPlaying()
-                startRecordingSampler()
             }
         })
 
@@ -97,20 +91,6 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
             true
         }
         else -> super.onOptionsItemSelected(item)
-    }
-
-    @Throws(IOException::class)
-    private fun startRecordingSampler(){
-        mRecordingSampler = RecordingSampler()
-        mRecordingSampler?.setVolumeListener(this)
-        mRecordingSampler?.setSamplingInterval(105)
-        mRecordingSampler?.link(visualizer)
-        mRecordingSampler?.startRecording()
-    }
-
-    private fun stopRecordingSampler(){
-        mRecordingSampler?.stopRecording()
-        mRecordingSampler?.release()
     }
 
     @Throws(IOException::class, IllegalStateException::class)
@@ -154,7 +134,6 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         mPlayer?.setOnCompletionListener { _ ->
             detail_play_button.setImageResource(R.drawable.ic_play_arrow_white_24dp)
             mIsPlaying = false
-            startRecordingSampler()
         }
     }
 
@@ -166,7 +145,7 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
     }
 
     override fun onStop() {
-        stopRecordingSampler()
+
         if (mIsRecording) {
             mRecorder?.stop()
             mRecorder?.release()
@@ -177,10 +156,6 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
             mPlayer?.release()
         }
         super.onStop()
-    }
-
-    override fun onCalculateVolume(volume: Int) {
-        Log.d("currentVolume ",volume.toString())
     }
 
     override fun onDialogPositiveClick(dialogFragment: DialogFragment, loopName: String) {

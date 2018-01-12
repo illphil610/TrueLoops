@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         val mDbManager = DbManager(applicationContext)
         mSongArrayList = mDbManager.getSongs()
         songList.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-        songList.adapter = com.newwesterndev.trueloops.utils.adapters.SongListAdapter(this, mSongArrayList)
+        songList.adapter = com.newwesterndev.trueloops.utils.adapters.SongListAdapter(this, mSongArrayList, mDbManager)
 
         main_record_button.setOnClickListener{_ ->
             startRecordActivity()
