@@ -2,6 +2,7 @@ package com.newwesterndev.trueloops.db
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.newwesterndev.trueloops.model.Model
 import com.newwesterndev.trueloops.model.SQLModel
 import org.jetbrains.anko.db.*
@@ -11,7 +12,7 @@ class DbManager(private val c: Context){
     private val songDb = SongDbHelper.getInstance(c)
     private val trackDb = TrackDbHelper.getInstance(c)
 
-    fun songToDb(song: Model.Song, tracks: ArrayList<Model.Track?>){
+    fun songToDb(song: Model.Song, tracks: ArrayList<SQLModel.Track?>){
         songDb.use {
             createTable(SongSQLiteContract.TABLE_NAME, true,
                     SongSQLiteContract.COLUMN_ID to INTEGER + PRIMARY_KEY,
@@ -38,7 +39,7 @@ class DbManager(private val c: Context){
                     TrackSQLiteContract.COLUMN_FROM_SONG_NAME to TEXT,
                     TrackSQLiteContract.COLUMN_FILE_PATH to TEXT)
 
-            for(track: Model.Track? in tracks) {
+            for(track: SQLModel.Track? in tracks) {
                 insert(TrackSQLiteContract.TABLE_NAME,
                         TrackSQLiteContract.COLUMN_FROM_SONG_NAME to song.name,
                         TrackSQLiteContract.COLUMN_FILE_PATH to track?.filePath)
@@ -68,31 +69,32 @@ class DbManager(private val c: Context){
                 i++
             }
         }
-
         return songModel
     }
 
-    fun getTracks(songName: String): ArrayList<SQLModel.Track?>{
+    fun getTracks(songName: String): ArrayList<SQLModel.Track?> {
+        Log.e("I AM FUCKING HERE BITCH", "YOU MOTHER FUCKER")
         val rowParser = classParser<SQLModel.Track>()
         val trackModel: ArrayList<SQLModel.Track?> = ArrayList()
-        var stillGettingTracks = false
+        var stillGettingTracks = true
         var i = 1
 
         trackDb.use {
-            while(stillGettingTracks) {
+            while (stillGettingTracks) {
                 val currentTrack = select(TrackSQLiteContract.TABLE_NAME)
                         .whereSimple("(_id = ?)", i.toString())
                         .parseOpt(rowParser)
-                if(currentTrack == null){
-                    stillGettingTracks = false
-                }else if(currentTrack.fromSongName == songName){
-                    trackModel.add(currentTrack)
-                }
 
+                if (currentTrack == null) {
+                    stillGettingTracks = false
+                    Log.e("TrackFalse", "Track false")
+                } else if (currentTrack.fromSongName == songName) {
+                    trackModel.add(currentTrack)
+                    Log.e("Current Track", currentTrack.toString())
+                }
                 i++
             }
         }
-
         return trackModel
     }
 
@@ -118,7 +120,6 @@ class DbManager(private val c: Context){
                 i++
             }
         }
-
         return doesExist
     }
 
@@ -130,4 +131,15 @@ class DbManager(private val c: Context){
         }
     }
 
+    fun getSingleSongFromDB(songId: String?) : SQLModel.Song? {
+        val rowParser = classParser<SQLModel.Song>()
+        var song: SQLModel.Song? = null
+        songDb.use {
+            val currentSong = select(SongSQLiteContract.TABLE_NAME)
+                    .whereSimple("(_id = ?)", songId.toString())
+                    .parseOpt(rowParser)
+            song = currentSong
+        }
+        return song
+    }
 }

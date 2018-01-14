@@ -6,23 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.newwesterndev.trueloops.R
+import com.newwesterndev.trueloops.db.DbManager
 import com.newwesterndev.trueloops.model.Model
+import com.newwesterndev.trueloops.model.SQLModel
 import kotlinx.android.synthetic.main.track_list_row.view.*
 
-class TrackListAdapter(private val context: Context, private val tracks: ArrayList<Model.Track?>):
+class TrackListAdapter(private val context: Context, private val tracks: ArrayList<SQLModel.Track?>, private val dbManager: DbManager):
         RecyclerView.Adapter<TrackListAdapter.ViewHolder>(){
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentTrack = tracks[position]
-
         holder.trackName.text = "Track " + position.toString()
 
         holder.itemLayout.setOnClickListener({_ ->
-
         })
 
         holder.deleteButton.setOnClickListener({_ ->
-
         })
     }
 
@@ -41,5 +40,4 @@ class TrackListAdapter(private val context: Context, private val tracks: ArrayLi
         val deleteButton = itemView.delete_track_button
         val itemLayout = itemView.track_item_layout
     }
-
 }

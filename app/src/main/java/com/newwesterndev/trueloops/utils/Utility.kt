@@ -1,7 +1,10 @@
 package com.newwesterndev.trueloops.utils
 
+import android.content.Context
 import android.os.Environment
+import android.widget.Toast
 import com.newwesterndev.trueloops.model.Model
+import com.newwesterndev.trueloops.model.SQLModel
 import java.io.File
 
 /**
@@ -15,8 +18,7 @@ class Utility {
         return mFile
     }
 
-    fun updateNewTrackToTrackList(newTrack : Model.Track, trackList : ArrayList<Model.Track>?) : ArrayList<Model.Track>? {
-        trackList?.add(newTrack)
-        return trackList
+    fun showToast(context : Context, message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }

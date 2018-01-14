@@ -17,13 +17,12 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import com.newwesterndev.trueloops.db.DbManager
 import com.newwesterndev.trueloops.model.Model
-import com.newwesterndev.trueloops.model.Model.Track
+import com.newwesterndev.trueloops.model.SQLModel
 import com.newwesterndev.trueloops.modules.PlaybackModule
 import com.newwesterndev.trueloops.utils.DaggerPlaybackComponent
 import com.newwesterndev.trueloops.utils.LoopNameDialog
 import com.newwesterndev.trueloops.utils.Utility
 import com.newwesterndev.trueloops.utils.adapters.TrackListAdapter
-import com.tyorikan.voicerecordingvisualizer.RecordingSampler
 import kotlinx.android.synthetic.main.activity_record.*
 import java.io.File
 import java.io.IOException
@@ -34,16 +33,15 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
     private var mPlayer: MediaPlayer? = null
     private var mPlayback: Model.PlaybackRecording
     private var mFile: File? = null
-    private var mTrackArrayList: ArrayList<Track?> = ArrayList()
+    private var mTrackArrayList: ArrayList<SQLModel.Track?> = ArrayList()
     private var mUtility: Utility = Utility()
     private var mLoopNameDialog = LoopNameDialog()
-    private var mTrackAdapter: TrackListAdapter
-
     private var mIsRecording = false
     private var mIsPlaying = false
+    private var songId: String? = null
+    private var selectedSong: SQLModel.Song? = null
 
     init {
-        mTrackAdapter = TrackListAdapter(this, mTrackArrayList)
         val daggerPRComponent = DaggerPlaybackComponent.builder()
                 .playbackModule(PlaybackModule())
                 .build()
@@ -54,10 +52,19 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record)
 
+        val mDBManger = DbManager(applicationContext)
+        songId = intent?.getStringExtra("song_id")
+        selectedSong = mDBManger.getSingleSongFromDB(songId)
+
+        // There has to be a better way for this but it worked for the time being....
+        // Issue is if the user creates a new recording this would cause a crash if null isnt checked
+        if (selectedSong != null)
+            mTrackArrayList = mDBManger.getTracks(selectedSong!!.name)
+
+        detail_track_list.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+        detail_track_list.adapter = com.newwesterndev.trueloops.utils.adapters.TrackListAdapter(this, mTrackArrayList, mDBManger)
         slideUp(detail_settings_button)
         slideUp(detail_play_button)
-        detail_track_list.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-        detail_track_list.adapter = mTrackAdapter
 
         detail_record_button.setOnClickListener({_ ->
             if (!mIsRecording){
@@ -117,8 +124,14 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         mRecorder?.reset()
         mRecorder?.release()
 
-        mTrackArrayList.add(Track("Track ", mFile?.absolutePath.toString()))
-        mTrackAdapter.notifyDataSetChanged()
+        // JOEEEEEE!!!!
+        // I dont think this is the best way to create the tracks... I see the tracks are created nicely in the DbManager
+        // with the specified song details etc.  I feel like creating this is like a space holder until the actual data is
+        // written which will overwrite all of this nonesense.
+        val testTrack = SQLModel.Track(1, selectedSong?.name.toString(), mFile?.absolutePath.toString())
+        mTrackArrayList.add(testTrack)
+        mUtility.showToast(this, mTrackArrayList.toString())
+        detail_track_list.adapter.notifyDataSetChanged()
         // Pop up dialog to get track name
     }
 
@@ -187,7 +200,13 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
                     .translationYBy((-metrics.heightPixels).toFloat())
                     .start()
         } catch (ex: Exception) {
-
+            ex.printStackTrace()
         }
+    }
+
+    private fun getTracksFromSingleSong(): ArrayList<SQLModel.Track?> {
+        val dbManager = DbManager(this)
+        val selectedSong = dbManager.getSingleSongFromDB((songId))
+        return dbManager.getTracks(selectedSong.toString())
     }
 }
