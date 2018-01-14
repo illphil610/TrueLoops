@@ -2,7 +2,9 @@ package com.newwesterndev.trueloops.utils.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat.startActivity
+import android.support.v4.util.Pair
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,7 @@ import com.newwesterndev.trueloops.R
 import com.newwesterndev.trueloops.RecordActivity
 import com.newwesterndev.trueloops.db.DbManager
 import com.newwesterndev.trueloops.model.SQLModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.song_list_row.view.*
 
 class SongListAdapter(private val context: Context, private val songs: ArrayList<SQLModel.Song?>, private val dbManager: DbManager):
@@ -54,5 +57,4 @@ class SongListAdapter(private val context: Context, private val songs: ArrayList
         val deleteButton = itemView.delete_loop_button
         val itemLayout = itemView.song_item_layout
     }
-
 }

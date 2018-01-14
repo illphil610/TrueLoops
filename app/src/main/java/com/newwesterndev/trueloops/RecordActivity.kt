@@ -130,7 +130,7 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         // written which will overwrite all of this nonesense.
         val testTrack = SQLModel.Track(1, selectedSong?.name.toString(), mFile?.absolutePath.toString())
         mTrackArrayList.add(testTrack)
-        mUtility.showToast(this, mTrackArrayList.toString())
+        //mUtility.showToast(this, mTrackArrayList.toString())
         detail_track_list.adapter.notifyDataSetChanged()
         // Pop up dialog to get track name
     }
