@@ -75,8 +75,12 @@ class DbManager(private val c: Context){
                     .parseList(rowParser)
         }
 
+        Log.e("Anything? ", "")
+
         for(i in 0 until(trackList.size)){
-            trackModel.add(trackList[i])
+            Log.e("Size ", i.toString())
+            val currentTrack = trackList[i]
+            trackModel.add(currentTrack)
         }
 
         return trackModel
@@ -84,26 +88,20 @@ class DbManager(private val c: Context){
 
     fun doesLoopNameExist(name: String): Boolean{
         val rowParser = classParser<SQLModel.Song>()
-        var stillGettingSongs = true
         var doesExist = false
-        var i = 1
+        var songList: List<SQLModel.Song> = ArrayList()
 
         songDb.use {
-            while (stillGettingSongs) {
-                val currentSong = select(SongSQLiteContract.TABLE_NAME)
-                        .whereSimple("(_id = ?)", i.toString())
-                        .parseOpt(rowParser)
+            songList = select(SongSQLiteContract.TABLE_NAME)
+                    .parseList(rowParser)
+        }
 
-                if(currentSong == null){
-                    stillGettingSongs = false
-                }else{
-                    if(currentSong.name == name){
-                        doesExist = true
-                    }
-                }
-                i++
+        for(i in 0 until(songList.size)){
+            if(songList[i].name == name){
+                doesExist = true
             }
         }
+
         return doesExist
     }
 
@@ -121,7 +119,21 @@ class DbManager(private val c: Context){
         }
     }
 
+    fun updateSong(song: SQLModel.Song?, tracks: ArrayList<SQLModel.Track>){
+        trackDb.use {
+            delete(TrackSQLiteContract.TABLE_NAME,
+                    "${TrackSQLiteContract.COLUMN_FROM_SONG_NAME} = {fromname}",
+                    "fromname" to song!!.name)
+            for(track: SQLModel.Track? in tracks) {
+                insert(TrackSQLiteContract.TABLE_NAME,
+                        TrackSQLiteContract.COLUMN_FROM_SONG_NAME to song.name,
+                        TrackSQLiteContract.COLUMN_FILE_PATH to track?.filePath)
+            }
+        }
+    }
+
     fun getSingleSongFromDB(songId: String?) : SQLModel.Song? {
+
         val rowParser = classParser<SQLModel.Song>()
         var song: SQLModel.Song? = null
         songDb.use {

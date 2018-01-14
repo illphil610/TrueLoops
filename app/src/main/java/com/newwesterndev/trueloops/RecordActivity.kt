@@ -1,6 +1,8 @@
 package com.newwesterndev.trueloops
 
+import android.app.AlertDialog
 import android.app.DialogFragment
+import android.content.DialogInterface
 import android.content.Intent
 import android.media.MediaPlayer
 import android.media.MediaRecorder
@@ -180,7 +182,19 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }else{
-            Toast.makeText(this, "Bad name", Toast.LENGTH_SHORT).show()
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Do you want to overwrite the song named " + loopName + "?")
+                    .setTitle("Song name already exists!")
+                    .setPositiveButton(R.string.save, DialogInterface.OnClickListener({dialogInterface, i ->
+                        dbManager.updateSong(selectedSong, mTrackArrayList)
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                    }))
+                    .setNegativeButton(R.string.cancel, DialogInterface.OnClickListener({dialogInterface, i ->
+
+                    }))
+
+            builder.show()
         }
     }
 
