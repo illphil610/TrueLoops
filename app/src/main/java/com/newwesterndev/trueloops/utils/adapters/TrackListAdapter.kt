@@ -11,7 +11,7 @@ import com.newwesterndev.trueloops.model.Model
 import com.newwesterndev.trueloops.model.SQLModel
 import kotlinx.android.synthetic.main.track_list_row.view.*
 
-class TrackListAdapter(private val context: Context, private val tracks: ArrayList<SQLModel.Track?>, private val dbManager: DbManager):
+class TrackListAdapter(private val context: Context, private val tracks: ArrayList<SQLModel.Track>, private val dbManager: DbManager):
         RecyclerView.Adapter<TrackListAdapter.ViewHolder>(){
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

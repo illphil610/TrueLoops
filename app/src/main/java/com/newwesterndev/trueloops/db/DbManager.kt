@@ -12,7 +12,7 @@ class DbManager(private val c: Context){
     private val songDb = SongDbHelper.getInstance(c)
     private val trackDb = TrackDbHelper.getInstance(c)
 
-    fun songToDb(song: Model.Song, tracks: ArrayList<SQLModel.Track?>){
+    fun songToDb(song: Model.Song, tracks: ArrayList<SQLModel.Track>){
         songDb.use {
             createTable(SongSQLiteContract.TABLE_NAME, true,
                     SongSQLiteContract.COLUMN_ID to INTEGER + PRIMARY_KEY,
@@ -47,54 +47,38 @@ class DbManager(private val c: Context){
         }
     }
 
-    fun getSongs(): ArrayList<SQLModel.Song?> {
+    fun getSongs(): ArrayList<SQLModel.Song> {
         val rowParser = classParser<SQLModel.Song>()
-        val songModel: ArrayList<SQLModel.Song?> = ArrayList()
-        var stillGettingSongs = true
-        var i = 1
+        var songList: List<SQLModel.Song> = ArrayList()
+        val songModel: ArrayList<SQLModel.Song> = ArrayList()
 
         songDb.use {
-            while (stillGettingSongs) {
-                        val currentSong = select(SongSQLiteContract.TABLE_NAME)
-                                .whereSimple("(_id = ?)", i.toString())
-                                .parseOpt(rowParser)
-
-                        if(currentSong == null){
-                            Log.e("False ", "False")
-                            stillGettingSongs = false
-                        }else{
-                            songModel.add(currentSong)
-                            Log.e("Current Song ", currentSong.name)
-                        }
-                i++
-            }
+            songList = select(SongSQLiteContract.TABLE_NAME)
+                    .parseList(rowParser)
         }
+
+        for(i in 0 until(songList.size)){
+            songModel.add(songList[i])
+        }
+
         return songModel
     }
 
-    fun getTracks(songName: String): ArrayList<SQLModel.Track?> {
-        Log.e("I AM FUCKING HERE BITCH", "YOU MOTHER FUCKER")
+    fun getTracks(songName: String): ArrayList<SQLModel.Track> {
         val rowParser = classParser<SQLModel.Track>()
-        val trackModel: ArrayList<SQLModel.Track?> = ArrayList()
-        var stillGettingTracks = true
-        var i = 1
+        var trackList: List<SQLModel.Track> = ArrayList()
+        val trackModel: ArrayList<SQLModel.Track> = ArrayList()
 
         trackDb.use {
-            while (stillGettingTracks) {
-                val currentTrack = select(TrackSQLiteContract.TABLE_NAME)
-                        .whereSimple("(_id = ?)", i.toString())
-                        .parseOpt(rowParser)
-
-                if (currentTrack == null) {
-                    stillGettingTracks = false
-                    Log.e("TrackFalse", "Track false")
-                } else if (currentTrack.fromSongName == songName) {
-                    trackModel.add(currentTrack)
-                    Log.e("Current Track", currentTrack.toString())
-                }
-                i++
-            }
+            trackList = select(TrackSQLiteContract.TABLE_NAME)
+                    .whereSimple("(fromsong = ?)", songName)
+                    .parseList(rowParser)
         }
+
+        for(i in 0 until(trackList.size)){
+            trackModel.add(trackList[i])
+        }
+
         return trackModel
     }
 
@@ -128,6 +112,12 @@ class DbManager(private val c: Context){
             delete(SongSQLiteContract.TABLE_NAME,
                     "${SongSQLiteContract.COLUMN_NAME} = {name}",
                     "name" to name)
+        }
+
+        trackDb.use {
+            delete(TrackSQLiteContract.TABLE_NAME,
+                    "${TrackSQLiteContract.COLUMN_FROM_SONG_NAME} = {fromname}",
+                    "fromname" to name)
         }
     }
 

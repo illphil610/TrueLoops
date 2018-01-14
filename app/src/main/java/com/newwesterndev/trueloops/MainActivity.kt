@@ -15,7 +15,7 @@ import com.newwesterndev.trueloops.model.SQLModel
 
 class MainActivity : AppCompatActivity() {
 
-    private var mSongArrayList: ArrayList<SQLModel.Song?> = ArrayList()
+    private var mSongArrayList: ArrayList<SQLModel.Song> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

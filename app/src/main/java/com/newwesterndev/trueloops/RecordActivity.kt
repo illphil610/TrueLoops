@@ -33,7 +33,7 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
     private var mPlayer: MediaPlayer? = null
     private var mPlayback: Model.PlaybackRecording
     private var mFile: File? = null
-    private var mTrackArrayList: ArrayList<SQLModel.Track?> = ArrayList()
+    private var mTrackArrayList: ArrayList<SQLModel.Track> = ArrayList()
     private var mUtility: Utility = Utility()
     private var mLoopNameDialog = LoopNameDialog()
     private var mIsRecording = false
@@ -56,8 +56,6 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         songId = intent?.getStringExtra("song_id")
         selectedSong = mDBManger.getSingleSongFromDB(songId)
 
-        // There has to be a better way for this but it worked for the time being....
-        // Issue is if the user creates a new recording this would cause a crash if null isnt checked
         if (selectedSong != null)
             mTrackArrayList = mDBManger.getTracks(selectedSong!!.name)
 
@@ -104,7 +102,7 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
     private fun startRecording(){
         detail_record_button.setImageResource(R.drawable.ic_stop_white_24dp)
         mIsRecording = true
-        mFile = mUtility?.createUniqueTrackFile()
+        mFile = mUtility.createUniqueTrackFile()
         Log.v("testing unique file", mFile.toString())
 
         // Abstract this as a function in Utility as well
@@ -204,7 +202,7 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         }
     }
 
-    private fun getTracksFromSingleSong(): ArrayList<SQLModel.Track?> {
+    private fun getTracksFromSingleSong(): ArrayList<SQLModel.Track> {
         val dbManager = DbManager(this)
         val selectedSong = dbManager.getSingleSongFromDB((songId))
         return dbManager.getTracks(selectedSong.toString())

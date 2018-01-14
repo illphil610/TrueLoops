@@ -18,17 +18,17 @@ import com.newwesterndev.trueloops.model.SQLModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.song_list_row.view.*
 
-class SongListAdapter(private val context: Context, private val songs: ArrayList<SQLModel.Song?>, private val dbManager: DbManager):
+class SongListAdapter(private val context: Context, private val songs: ArrayList<SQLModel.Song>, private val dbManager: DbManager):
         RecyclerView.Adapter<SongListAdapter.ViewHolder>(){
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentSong = songs[position]
 
-        holder.songName.text = currentSong?.name
+        holder.songName.text = currentSong.name
 
         holder.itemLayout.setOnClickListener({_ ->
             val intent = Intent(context, RecordActivity::class.java)
-            val i = songs[position]?.id.toString()
+            val i = songs[position].id.toString()
             intent.putExtra("song_id", i)
 
             // What is this options nonsense? haha
@@ -36,7 +36,7 @@ class SongListAdapter(private val context: Context, private val songs: ArrayList
         })
 
         holder.deleteButton.setOnClickListener({_ ->
-            dbManager.deleteSong(currentSong!!.name)
+            dbManager.deleteSong(currentSong.name)
             val i = Intent(context, MainActivity::class.java)
             context.startActivity(i)
         })
