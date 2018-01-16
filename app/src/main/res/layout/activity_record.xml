@@ -10,8 +10,9 @@
         android:id="@+id/detail_bottom_view"
         android:layout_width="match_parent"
         android:layout_gravity="bottom"
-        android:layout_height="210dp"
-        android:background="@color/colorPrimaryText"
+        android:layout_height="100dp"
+        android:elevation="16dp"
+        android:background="@android:color/black"
         android:transitionName="bottom_view"/>
 
     <com.tyorikan.voicerecordingvisualizer.VisualizerView
@@ -29,7 +30,8 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="125dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="120dp"
         android:background="@drawable/rounded_record_button"
         android:elevation="16dp"
         android:src="@drawable/ic_fiber_manual_record_white_24dp"
@@ -40,28 +42,77 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="125dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginRight="120dp"
         android:background="@drawable/rounded_play_button"
         android:elevation="16dp"
         android:src="@drawable/ic_play_arrow_white_24dp"
         android:transitionName="play_button"/>
 
-    <ImageButton
-        android:id="@+id/detail_settings_button"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="125dp"
-        android:layout_marginLeft="120dp"
-        android:background="@drawable/rounded_settings_button"
-        android:elevation="16dp"
-        android:src="@drawable/ic_settings_white_24dp"
-        android:transitionName="settings_button"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/detail_track_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="210dp"/>
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="100dp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:elevation="16dp"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/m_menu_track_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_more_vert_black_36dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:fontFamily="@font/autour_one"
+            android:layout_gravity="center_vertical"
+            android:text="@string/master_track"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <GridLayout
+            android:id="@+id/m_track_grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@android:color/white"
+                android:visibility="invisible"
+                android:text="@string/track_rec"/>
+
+            <CheckBox
+                android:id="@+id/m_track_rec_check"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="@string/track_play"/>
+
+            <CheckBox
+                android:id="@+id/m_track_play_check"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+        </GridLayout>
+
+    </FrameLayout>
 </FrameLayout>

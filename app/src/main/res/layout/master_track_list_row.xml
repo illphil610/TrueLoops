@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/colorPrimary"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/m_menu_track_button"
+        android:layout_margin="10dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical|start"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_more_vert_black_36dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:fontFamily="@font/autour_one"
+        android:layout_gravity="center_vertical"
+        android:text="@string/master_track"
+        android:textStyle="bold" />
+
+    <GridLayout
+        android:id="@+id/m_track_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/track_rec"/>
+
+        <CheckBox
+            android:id="@+id/m_track_rec_check"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/track_play"/>
+
+        <CheckBox
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_width="wrap_content"/>
+
+    </GridLayout>
+
+</FrameLayout>

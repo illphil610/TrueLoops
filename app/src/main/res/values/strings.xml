@@ -12,4 +12,6 @@
 
     <string name="track_rec">REC</string>
     <string name="track_play">PLAY</string>
+
+    <string name="master_track">Master Track</string>
 </resources>

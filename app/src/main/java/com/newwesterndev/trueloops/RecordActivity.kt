@@ -63,7 +63,6 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
 
         detail_track_list.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         detail_track_list.adapter = com.newwesterndev.trueloops.utils.adapters.TrackListAdapter(this, mTrackArrayList, mDBManger)
-        slideUp(detail_settings_button)
         slideUp(detail_play_button)
 
         detail_record_button.setOnClickListener({_ ->
@@ -80,10 +79,6 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
             } else {
                 stopPlaying()
             }
-        })
-
-        detail_settings_button.setOnClickListener({_ ->
-           PlaybackSettingsDialog(this, mPlayback).show()
         })
     }
 
