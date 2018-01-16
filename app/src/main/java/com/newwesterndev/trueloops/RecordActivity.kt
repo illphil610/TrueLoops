@@ -180,6 +180,7 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
                     mPlayback.metronome.bpm, mPlayback.metronome.timeSigOne, mPlayback.metronome.timeSigTwo,
                     mPlayback.metronome.playDuringRecording.toString()), mTrackArrayList)
             val intent = Intent(this, MainActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }else{
             val builder = AlertDialog.Builder(this)
@@ -214,11 +215,5 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
-    }
-
-    private fun getTracksFromSingleSong(): ArrayList<SQLModel.Track> {
-        val dbManager = DbManager(this)
-        val selectedSong = dbManager.getSingleSongFromDB((songId))
-        return dbManager.getTracks(selectedSong.toString())
     }
 }
