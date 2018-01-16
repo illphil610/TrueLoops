@@ -1,4 +1,4 @@
-package com.newwesterndev.trueloops.utils
+package com.newwesterndev.trueloops.utils.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -6,9 +6,7 @@ import android.app.DialogFragment
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.widget.EditText
 import com.newwesterndev.trueloops.R
-import kotlinx.android.synthetic.main.give_song_name_dialog.*
 import kotlinx.android.synthetic.main.give_song_name_dialog.view.*
 
 class LoopNameDialog: DialogFragment(){

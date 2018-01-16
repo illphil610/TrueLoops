@@ -23,7 +23,18 @@
         android:layout_gravity="center_vertical"
         android:textStyle="bold" />
 
+    <EditText
+        android:id="@+id/track_name_edit"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:fontFamily="@font/autour_one"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone"
+        android:textStyle="bold" />
+
     <GridLayout
+        android:id="@+id/track_grid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end">
@@ -49,6 +60,24 @@
             android:layout_width="wrap_content"/>
 
     </GridLayout>
+
+    <Button
+        android:id="@+id/track_done_renaming"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="90dp"
+        android:layout_marginEnd="90dp"
+        android:layout_gravity="end|center_vertical"
+        android:visibility="gone"
+        android:text="@string/save"/>
+
+    <Button
+        android:id="@+id/track_cancel_renaming"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:visibility="gone"
+        android:text="@string/cancel"/>
 
     <View
         android:layout_width="match_parent"

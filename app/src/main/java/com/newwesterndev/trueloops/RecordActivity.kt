@@ -16,15 +16,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.widget.LinearLayout
-import android.widget.Toast
 import com.newwesterndev.trueloops.db.DbManager
 import com.newwesterndev.trueloops.model.Model
-import com.newwesterndev.trueloops.model.SQLModel
 import com.newwesterndev.trueloops.modules.PlaybackModule
 import com.newwesterndev.trueloops.utils.DaggerPlaybackComponent
-import com.newwesterndev.trueloops.utils.LoopNameDialog
+import com.newwesterndev.trueloops.utils.dialogs.LoopNameDialog
 import com.newwesterndev.trueloops.utils.Utility
 import com.newwesterndev.trueloops.utils.adapters.TrackListAdapter
+import com.newwesterndev.trueloops.utils.dialogs.PlaybackSettingsDialog
 import kotlinx.android.synthetic.main.activity_record.*
 import java.io.File
 import java.io.IOException
