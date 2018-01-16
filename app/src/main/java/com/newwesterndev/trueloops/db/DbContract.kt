@@ -18,4 +18,6 @@ object TrackSQLiteContract{
     val COLUMN_TRACK_NAME = "trackname"
     val COLUMN_FROM_SONG_NAME = "fromsong"
     val COLUMN_FILE_PATH = "filepath"
+    val COLUMN_ARMED = "armed"
+    val COLUMN_WILL_PLAY = "willplay"
 }

@@ -11,7 +11,9 @@ class TrackDbHelper(context: Context): ManagedSQLiteOpenHelper(context, "current
                 TrackSQLiteContract.COLUMN_ID to INTEGER + PRIMARY_KEY,
                 TrackSQLiteContract.COLUMN_TRACK_NAME to TEXT,
                 TrackSQLiteContract.COLUMN_FROM_SONG_NAME to TEXT,
-                TrackSQLiteContract.COLUMN_FILE_PATH to TEXT)
+                TrackSQLiteContract.COLUMN_FILE_PATH to TEXT,
+                TrackSQLiteContract.COLUMN_ARMED to INTEGER,
+                TrackSQLiteContract.COLUMN_WILL_PLAY to INTEGER)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {

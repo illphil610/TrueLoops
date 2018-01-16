@@ -38,13 +38,17 @@ class DbManager(private val c: Context){
                     TrackSQLiteContract.COLUMN_ID to INTEGER + PRIMARY_KEY,
                     TrackSQLiteContract.COLUMN_TRACK_NAME to TEXT,
                     TrackSQLiteContract.COLUMN_FROM_SONG_NAME to TEXT,
-                    TrackSQLiteContract.COLUMN_FILE_PATH to TEXT)
+                    TrackSQLiteContract.COLUMN_FILE_PATH to TEXT,
+                    TrackSQLiteContract.COLUMN_ARMED to INTEGER,
+                    TrackSQLiteContract.COLUMN_WILL_PLAY to INTEGER)
 
             for(track: Model.Track? in tracks) {
                 insert(TrackSQLiteContract.TABLE_NAME,
                         TrackSQLiteContract.COLUMN_FROM_SONG_NAME to song.name,
                         TrackSQLiteContract.COLUMN_TRACK_NAME to track?.trackName,
-                        TrackSQLiteContract.COLUMN_FILE_PATH to track?.filePath)
+                        TrackSQLiteContract.COLUMN_FILE_PATH to track?.filePath,
+                        TrackSQLiteContract.COLUMN_ARMED to track?.armed,
+                        TrackSQLiteContract.COLUMN_WILL_PLAY to track?.willplay)
             }
         }
     }
@@ -85,7 +89,11 @@ class DbManager(private val c: Context){
 
         for(i in 0 until(trackList.size)){
             val currentTrack = trackList[i]
-            trackModel.add(Model.Track(currentTrack.trackName, currentTrack.fromSongName, currentTrack.filePath))
+            trackModel.add(Model.Track(currentTrack.trackName,
+                    currentTrack.fromSongName,
+                    currentTrack.filePath,
+                    currentTrack.armed,
+                    currentTrack.willplay))
         }
 
         return trackModel
@@ -132,7 +140,9 @@ class DbManager(private val c: Context){
             for(track: Model.Track? in tracks) {
                 insert(TrackSQLiteContract.TABLE_NAME,
                         TrackSQLiteContract.COLUMN_FROM_SONG_NAME to song.name,
-                        TrackSQLiteContract.COLUMN_FILE_PATH to track?.filePath)
+                        TrackSQLiteContract.COLUMN_FILE_PATH to track?.filePath,
+                        TrackSQLiteContract.COLUMN_ARMED to track?.armed,
+                        TrackSQLiteContract.COLUMN_WILL_PLAY to track?.willplay)
             }
         }
     }

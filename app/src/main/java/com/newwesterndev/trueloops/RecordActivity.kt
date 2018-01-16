@@ -56,8 +56,9 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
 
         val mDBManger = DbManager(applicationContext)
         songName = intent?.getStringExtra("song_name")
-        selectedSong = mDBManger.getSingleSongFromDB(songName)
 
+        if(songName != null)
+            selectedSong = mDBManger.getSingleSongFromDB(songName)
         if (selectedSong != null)
             mTrackArrayList = mDBManger.getTracks(selectedSong!!.name)
 
@@ -128,11 +129,9 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         // I dont think this is the best way to create the tracks... I see the tracks are created nicely in the DbManager
         // with the specified song details etc.  I feel like creating this is like a space holder until the actual data is
         // written which will overwrite all of this nonesense.
-        val testTrack = Model.Track("New Track", selectedSong?.name.toString(), mFile?.absolutePath.toString())
+        val testTrack = Model.Track("New Track", selectedSong?.name.toString(), mFile?.absolutePath.toString(), 0, 0)
         mTrackArrayList.add(testTrack)
-        //mUtility.showToast(this, mTrackArrayList.toString())
         detail_track_list.adapter.notifyDataSetChanged()
-        // Pop up dialog to get track name
     }
 
     @Throws(IOException::class)
@@ -178,7 +177,7 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
             dbManager.songToDb(Model.Song(loopName,
                     mPlayback.bars, mPlayback.measures,
                     mPlayback.metronome.bpm, mPlayback.metronome.timeSigOne, mPlayback.metronome.timeSigTwo,
-                    mPlayback.metronome.playDuringRecording.toString()), mTrackArrayList)
+                    mPlayback.metronome.playDuringRecording.toString()), TrackListAdapter.currentTrackList)
             val intent = Intent(this, MainActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
@@ -187,7 +186,7 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
             builder.setMessage("Do you want to overwrite the song named " + loopName + "?")
                     .setTitle("Song name already exists!")
                     .setPositiveButton(R.string.save, DialogInterface.OnClickListener({dialogInterface, i ->
-                        dbManager.updateSong(selectedSong, mTrackArrayList)
+                        dbManager.updateSong(selectedSong, TrackListAdapter.currentTrackList)
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     }))

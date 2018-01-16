@@ -14,5 +14,7 @@ object SQLModel {
     data class Track(var id: Int,
                      var trackName: String,
                      var fromSongName: String,
-                     var filePath: String)
+                     var filePath: String,
+                     var armed: Int,
+                     var willplay: Int)
 }

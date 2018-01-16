@@ -20,8 +20,39 @@ class TrackListAdapter(private val context: Context, private val tracks: ArrayLi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentTrack = tracks[position]
         holder.trackName.text = currentTrack.trackName
+        currentTrackList = tracks
 
-        holder.itemLayout.setOnClickListener({_ ->
+        when(currentTrack.armed){
+            0 -> holder.armedBox.isChecked = false
+            1 -> holder.armedBox.isChecked = true
+            else -> holder.armedBox.isChecked = false
+        }
+        when(currentTrack.willplay){
+            0 -> holder.willPlayBox.isChecked = false
+            1 -> holder.willPlayBox.isChecked = true
+            else -> holder.willPlayBox.isChecked = false
+        }
+
+        holder.armedBox.setOnCheckedChangeListener({_, _ ->
+            when(holder.armedBox.isChecked){
+                true -> { currentTrack.armed = 1
+                    currentTrackList = tracks
+                }
+                false -> { currentTrack.armed = 0
+                    currentTrackList = tracks
+                }
+            }
+        })
+
+        holder.willPlayBox.setOnCheckedChangeListener({_, _ ->
+            when(holder.willPlayBox.isChecked){
+                true -> { currentTrack.willplay = 1
+                    currentTrackList = tracks
+                }
+                false -> { currentTrack.willplay = 0
+                    currentTrackList = tracks
+                }
+            }
         })
 
         holder.deleteButton.setOnClickListener({_ ->
@@ -45,7 +76,7 @@ class TrackListAdapter(private val context: Context, private val tracks: ArrayLi
         })
     }
 
-    inline fun consume(f: () -> Unit): Boolean {
+    inline private fun consume(f: () -> Unit): Boolean {
         f()
         return true
     }
@@ -62,6 +93,11 @@ class TrackListAdapter(private val context: Context, private val tracks: ArrayLi
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val trackName = itemView.track_name
         val deleteButton = itemView.delete_track_button
-        val itemLayout = itemView.track_item_layout
+        val armedBox = itemView.track_rec_check
+        val willPlayBox = itemView.track_play_check
+    }
+
+    companion object {
+        var currentTrackList: ArrayList<Model.Track> = ArrayList()
     }
 }
