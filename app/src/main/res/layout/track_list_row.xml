@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/track_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+    <ImageButton
+        android:id="@+id/delete_track_button"
         android:layout_margin="10dp"
-        android:layout_gravity="start"
-        android:src="@drawable/ic_audiotrack_black_24dp" />
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical|start"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_more_vert_black_36dp" />
 
     <TextView
         android:id="@+id/track_name"
@@ -21,12 +23,36 @@
         android:layout_gravity="center_vertical"
         android:textStyle="bold" />
 
-    <ImageButton
-        android:id="@+id/delete_track_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_vertical|end"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_delete_forever_black_36dp" />
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/track_rec"/>
+
+        <CheckBox
+            android:id="@+id/track_rec_check"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/track_play"/>
+
+        <CheckBox
+            android:id="@+id/track_play_check"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+
+    </GridLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"/>
+
 </FrameLayout>

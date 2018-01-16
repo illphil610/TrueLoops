@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tpu_delete_item"
+        android:title="@string/tpu_delete"/>
+
+    <item
+        android:id="@+id/tpu_rename_item"
+        android:title="@string/tpu_rename"/>
+
+</menu>

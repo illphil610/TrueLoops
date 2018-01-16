@@ -9,6 +9,7 @@ class TrackDbHelper(context: Context): ManagedSQLiteOpenHelper(context, "current
     override fun onCreate(db: SQLiteDatabase) {
         db.createTable(TrackSQLiteContract.TABLE_NAME, true,
                 TrackSQLiteContract.COLUMN_ID to INTEGER + PRIMARY_KEY,
+                TrackSQLiteContract.COLUMN_TRACK_NAME to TEXT,
                 TrackSQLiteContract.COLUMN_FROM_SONG_NAME to TEXT,
                 TrackSQLiteContract.COLUMN_FILE_PATH to TEXT)
     }

@@ -35,13 +35,13 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
     private var mPlayer: MediaPlayer? = null
     private var mPlayback: Model.PlaybackRecording
     private var mFile: File? = null
-    private var mTrackArrayList: ArrayList<SQLModel.Track> = ArrayList()
+    private var mTrackArrayList: ArrayList<Model.Track> = ArrayList()
     private var mUtility: Utility = Utility()
     private var mLoopNameDialog = LoopNameDialog()
     private var mIsRecording = false
     private var mIsPlaying = false
-    private var songId: String? = null
-    private var selectedSong: SQLModel.Song? = null
+    private var songName: String? = null
+    private var selectedSong: Model.Song? = null
 
     init {
         val daggerPRComponent = DaggerPlaybackComponent.builder()
@@ -55,8 +55,8 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         setContentView(R.layout.activity_record)
 
         val mDBManger = DbManager(applicationContext)
-        songId = intent?.getStringExtra("song_id")
-        selectedSong = mDBManger.getSingleSongFromDB(songId)
+        songName = intent?.getStringExtra("song_name")
+        selectedSong = mDBManger.getSingleSongFromDB(songName)
 
         if (selectedSong != null)
             mTrackArrayList = mDBManger.getTracks(selectedSong!!.name)
@@ -128,7 +128,7 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         // I dont think this is the best way to create the tracks... I see the tracks are created nicely in the DbManager
         // with the specified song details etc.  I feel like creating this is like a space holder until the actual data is
         // written which will overwrite all of this nonesense.
-        val testTrack = SQLModel.Track(1, selectedSong?.name.toString(), mFile?.absolutePath.toString())
+        val testTrack = Model.Track("New Track", selectedSong?.name.toString(), mFile?.absolutePath.toString())
         mTrackArrayList.add(testTrack)
         //mUtility.showToast(this, mTrackArrayList.toString())
         detail_track_list.adapter.notifyDataSetChanged()

@@ -10,7 +10,8 @@ object Model {
                     var timeSigTwo: Int,
                     var playDuringRecording: String)
 
-    data class Track(var fromSongName: String,
+    data class Track(var trackName: String,
+                     var fromSongName: String,
                      var filePath: String)
 
     data class PlaybackRecording(var bars: Int,

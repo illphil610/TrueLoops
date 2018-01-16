@@ -11,11 +11,12 @@ import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.LinearLayout
 import com.newwesterndev.trueloops.db.DbManager
+import com.newwesterndev.trueloops.model.Model
 import com.newwesterndev.trueloops.model.SQLModel
 
 class MainActivity : AppCompatActivity() {
 
-    private var mSongArrayList: ArrayList<SQLModel.Song> = ArrayList()
+    private var mSongArrayList: ArrayList<Model.Song> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
