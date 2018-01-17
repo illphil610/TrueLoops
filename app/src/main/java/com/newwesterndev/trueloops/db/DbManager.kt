@@ -140,6 +140,7 @@ class DbManager(private val c: Context){
             for(track: Model.Track? in tracks) {
                 insert(TrackSQLiteContract.TABLE_NAME,
                         TrackSQLiteContract.COLUMN_FROM_SONG_NAME to song.name,
+                        TrackSQLiteContract.COLUMN_TRACK_NAME to track?.trackName,
                         TrackSQLiteContract.COLUMN_FILE_PATH to track?.filePath,
                         TrackSQLiteContract.COLUMN_ARMED to track?.armed,
                         TrackSQLiteContract.COLUMN_WILL_PLAY to track?.willplay)
