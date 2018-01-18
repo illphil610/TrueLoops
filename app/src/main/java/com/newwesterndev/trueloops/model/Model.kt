@@ -8,7 +8,9 @@ object Model {
                     var bpm: Int,
                     var timeSigOne: Int,
                     var timeSigTwo: Int,
-                    var playDuringRecording: String)
+                    var playDuringRecording: Int,
+                    var playMetronome: Int,
+                    var countInBars: Int)
 
     data class Track(var trackName: String,
                      var fromSongName: String,
@@ -18,11 +20,13 @@ object Model {
 
     data class PlaybackRecording(var bars: Int,
                                  var measures: Int,
-                                 var metronome: Metronome)
+                                 var metronome: Metronome,
+                                 var countInBars: Int)
 
     data class Metronome(var bpm: Int,
                          var timeSigOne: Int,
                          var timeSigTwo: Int,
-                         var playDuringRecording: Boolean)
+                         var playDuringRecording: Int,
+                         var playMetronome: Int)
 
 }

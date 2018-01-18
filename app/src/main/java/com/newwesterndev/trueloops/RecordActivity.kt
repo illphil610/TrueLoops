@@ -2,12 +2,14 @@ package com.newwesterndev.trueloops
 
 import android.app.AlertDialog
 import android.app.DialogFragment
+import android.support.v4.app.FragmentTransaction
 import android.content.DialogInterface
 import android.content.Intent
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.FragmentManager
 import android.support.v7.widget.LinearLayoutManager
 import android.util.DisplayMetrics
 import android.util.Log
@@ -16,37 +18,37 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.widget.LinearLayout
+import com.google.gson.Gson
 import com.newwesterndev.trueloops.db.DbManager
 import com.newwesterndev.trueloops.model.Model
-import com.newwesterndev.trueloops.modules.PlaybackModule
-import com.newwesterndev.trueloops.utils.DaggerPlaybackComponent
+import com.newwesterndev.trueloops.utils.DaggerNewSongComponent
 import com.newwesterndev.trueloops.utils.dialogs.LoopNameDialog
 import com.newwesterndev.trueloops.utils.Utility
 import com.newwesterndev.trueloops.utils.adapters.TrackListAdapter
-import com.newwesterndev.trueloops.utils.dialogs.PlaybackSettingsDialog
 import kotlinx.android.synthetic.main.activity_record.*
 import java.io.File
 import java.io.IOException
 
-class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListener{ //RecordingSampler.CalculateVolumeListener
+class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListener,
+        MasterTrackFragment.OnFragmentInteractionListener{
 
     private var mRecorder: MediaRecorder? = null
     private var mPlayer: MediaPlayer? = null
-    private var mPlayback: Model.PlaybackRecording
     private var mFile: File? = null
     private var mTrackArrayList: ArrayList<Model.Track> = ArrayList()
     private var mUtility: Utility = Utility()
     private var mLoopNameDialog = LoopNameDialog()
     private var mIsRecording = false
     private var mIsPlaying = false
+    private var mIsFragShowing = false
     private var songName: String? = null
-    private var selectedSong: Model.Song? = null
+    private var mCurrentSong: Model.Song? = null
+    private lateinit var mMasterTrackFrag: MasterTrackFragment
 
     init {
-        val daggerPRComponent = DaggerPlaybackComponent.builder()
-                .playbackModule(PlaybackModule())
+        val daggerNSComponent = DaggerNewSongComponent.builder()
                 .build()
-        mPlayback = daggerPRComponent.getDefaultPlaybackSettings()
+        mCurrentSong = daggerNSComponent.getNewSong()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,10 +58,11 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         val mDBManger = DbManager(applicationContext)
         songName = intent?.getStringExtra("song_name")
 
+
         if(songName != null)
-            selectedSong = mDBManger.getSingleSongFromDB(songName)
-        if (selectedSong != null)
-            mTrackArrayList = mDBManger.getTracks(selectedSong!!.name)
+            mCurrentSong = mDBManger.getSingleSongFromDB(songName)
+        if (mCurrentSong != null)
+            mTrackArrayList = mDBManger.getTracks(mCurrentSong!!.name)
 
         detail_track_list.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         detail_track_list.adapter = com.newwesterndev.trueloops.utils.adapters.TrackListAdapter(this, mTrackArrayList, mDBManger)
@@ -80,11 +83,28 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
                 stopPlaying()
             }
         })
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.record_menu, menu)
-        return true
+        m_menu_track_button.setOnClickListener{
+
+            if(!mIsFragShowing) {
+                mMasterTrackFrag = MasterTrackFragment.newInstance(Gson().toJson(mCurrentSong))
+
+                supportFragmentManager.inTransaction {
+                    setCustomAnimations(R.anim.slide_in_from_top,
+                            R.anim.slide_out_from_bottom,
+                            R.anim.slide_out_from_bottom,
+                            R.anim.slide_out_from_bottom)
+                    add(R.id.master_track_frag_view,
+                            mMasterTrackFrag)
+                }
+                mIsFragShowing = true
+            }else{
+                supportFragmentManager.inTransaction {
+                    remove(mMasterTrackFrag)
+                }
+                mIsFragShowing = false
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
@@ -123,7 +143,7 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         // I dont think this is the best way to create the tracks... I see the tracks are created nicely in the DbManager
         // with the specified song details etc.  I feel like creating this is like a space holder until the actual data is
         // written which will overwrite all of this nonesense.
-        val testTrack = Model.Track("New Track", selectedSong?.name.toString(), mFile?.absolutePath.toString(), 0, 0)
+        val testTrack = Model.Track("New Track", mCurrentSong?.name.toString(), mFile?.absolutePath.toString(), 0, 0)
         mTrackArrayList.add(testTrack)
         detail_track_list.adapter.notifyDataSetChanged()
     }
@@ -169,9 +189,16 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
 
         if(loopName.isNotEmpty() && !dbManager.doesLoopNameExist(loopName)) {
             dbManager.songToDb(Model.Song(loopName,
-                    mPlayback.bars, mPlayback.measures,
-                    mPlayback.metronome.bpm, mPlayback.metronome.timeSigOne, mPlayback.metronome.timeSigTwo,
-                    mPlayback.metronome.playDuringRecording.toString()), TrackListAdapter.currentTrackList)
+                    mCurrentSong!!.bars,
+                    mCurrentSong!!.measures,
+                    mCurrentSong!!.bpm,
+                    mCurrentSong!!.timeSigOne,
+                    mCurrentSong!!.timeSigTwo,
+                    mCurrentSong!!.playDuringRecording,
+                    mCurrentSong!!.playMetronome,
+                    mCurrentSong!!.countInBars),
+                    TrackListAdapter.currentTrackList)
+
             val intent = Intent(this, MainActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
@@ -180,7 +207,7 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
             builder.setMessage("Do you want to overwrite the song named " + loopName + "?")
                     .setTitle("Song name already exists!")
                     .setPositiveButton(R.string.save, DialogInterface.OnClickListener({dialogInterface, i ->
-                        dbManager.updateSong(selectedSong, TrackListAdapter.currentTrackList)
+                        dbManager.updateSong(mCurrentSong, TrackListAdapter.currentTrackList)
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     }))
@@ -193,6 +220,11 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
     }
 
     override fun onDialogNegativeClick(dialogFragment: DialogFragment) {
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.record_menu, menu)
+        return true
     }
 
     private fun slideUp(v: View) {
@@ -208,5 +240,19 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
+    }
+
+    private inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
+        val fragmentTransaction = beginTransaction()
+        fragmentTransaction.func()
+        fragmentTransaction.commit()
+    }
+
+    override fun onMTFragmentInteraction(songJson: String) {
+        mCurrentSong = Gson().fromJson(songJson, Model.Song::class.java)
+        supportFragmentManager.inTransaction {
+            remove(mMasterTrackFrag)
+        }
+        mIsFragShowing = false
     }
 }

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="8dp"
+    android:padding="8dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    tools:context=".MasterTrackFragment">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:columnCount="2">
+
+        <TextView
+            style="@style/MasterTrackLabelText"
+            android:text="@string/mt_bars" />
+
+        <EditText
+            android:id="@+id/mt_bars_edit"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/MasterTrackLabelText"
+            android:text="@string/mt_measures" />
+
+        <EditText
+            android:id="@+id/mt_measures_edit"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/MasterTrackLabelText"
+            android:text="@string/mt_bpm" />
+
+        <EditText
+            android:id="@+id/mt_bpm_edit"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/MasterTrackLabelText"
+            android:text="@string/mt_time_sig" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/mt_time_sig_one_edit"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mt_time_sig_divider" />
+
+            <EditText
+                android:id="@+id/mt_time_sig_two_edit"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <TextView
+            style="@style/MasterTrackLabelText"
+            android:text="@string/mt_count_in" />
+
+        <EditText
+            android:id="@+id/mt_count_in_edit"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/MasterTrackLabelText"
+            android:text="@string/mt_play_metro" />
+
+        <CheckBox
+            android:id="@+id/mt_play_metro_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/MasterTrackLabelText"
+            android:text="@string/mt_play_during" />
+
+        <CheckBox
+            android:id="@+id/mt_play_audio_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/mt_save_button"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="290dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:text="@string/save"/>
+
+</FrameLayout>

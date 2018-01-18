@@ -13,5 +13,16 @@
     <string name="track_rec">REC</string>
     <string name="track_play">PLAY</string>
 
-    <string name="master_track">Master Track</string>
+    <string name="master_track">Master Track: </string>
+    <string name="mt_bars">Bars: </string>
+    <string name="mt_measures">Measures: </string>
+    <string name="mt_bpm">BPM: </string>
+    <string name="mt_time_sig">Time Signature: </string>
+    <string name="mt_time_sig_divider">/</string>
+    <string name="mt_count_in">Count in bars: </string>
+    <string name="mt_play_metro">Play metronome: </string>
+    <string name="mt_play_during">Play audio: </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

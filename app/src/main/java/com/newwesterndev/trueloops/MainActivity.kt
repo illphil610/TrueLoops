@@ -12,7 +12,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.LinearLayout
 import com.newwesterndev.trueloops.db.DbManager
 import com.newwesterndev.trueloops.model.Model
-import com.newwesterndev.trueloops.model.SQLModel
+import com.newwesterndev.trueloops.utils.adapters.SongListAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         val mDbManager = DbManager(applicationContext)
         mSongArrayList = mDbManager.getSongs()
         songList.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-        songList.adapter = com.newwesterndev.trueloops.utils.adapters.SongListAdapter(this, mSongArrayList, mDbManager)
+        songList.adapter = SongListAdapter(this, mSongArrayList, mDbManager)
 
         main_record_button.setOnClickListener{_ ->
             startRecordActivity()

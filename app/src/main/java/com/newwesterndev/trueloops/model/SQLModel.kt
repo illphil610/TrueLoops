@@ -9,7 +9,9 @@ object SQLModel {
                     var bpm: Int,
                     var timeSigOne: Int,
                     var timeSigTwo: Int,
-                    var playDuringRecording: String)
+                    var playDuringRecording: Int,
+                    var playMetronome: Int,
+                    var countInBars: Int)
 
     data class Track(var id: Int,
                      var trackName: String,

@@ -15,7 +15,9 @@ class SongDbHelper(context: Context): ManagedSQLiteOpenHelper(context, "currents
                 SongSQLiteContract.COLUMN_BPM to INTEGER,
                 SongSQLiteContract.COLUMN_TIME_SIG_ONE to INTEGER,
                 SongSQLiteContract.COLUMN_TIME_SIG_TWO to INTEGER,
-                SongSQLiteContract.COLUMN_PLAY_DURING_REC to TEXT)
+                SongSQLiteContract.COLUMN_PLAY_DURING_REC to INTEGER,
+                SongSQLiteContract.COLUMN_PLAY_METRONOME to INTEGER,
+                SongSQLiteContract.COLUMN_COUNT_IN_BARS to INTEGER)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {

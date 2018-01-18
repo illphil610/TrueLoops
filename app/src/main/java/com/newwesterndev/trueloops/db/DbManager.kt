@@ -22,7 +22,9 @@ class DbManager(private val c: Context){
                     SongSQLiteContract.COLUMN_BPM to INTEGER,
                     SongSQLiteContract.COLUMN_TIME_SIG_ONE to INTEGER,
                     SongSQLiteContract.COLUMN_TIME_SIG_TWO to INTEGER,
-                    SongSQLiteContract.COLUMN_PLAY_DURING_REC to TEXT)
+                    SongSQLiteContract.COLUMN_PLAY_DURING_REC to INTEGER,
+                    SongSQLiteContract.COLUMN_PLAY_METRONOME to INTEGER,
+                    SongSQLiteContract.COLUMN_COUNT_IN_BARS to INTEGER)
             insert(SongSQLiteContract.TABLE_NAME,
                     SongSQLiteContract.COLUMN_NAME to song.name,
                     SongSQLiteContract.COLUMN_BARS to song.bars,
@@ -30,7 +32,9 @@ class DbManager(private val c: Context){
                     SongSQLiteContract.COLUMN_BPM to song.bpm,
                     SongSQLiteContract.COLUMN_TIME_SIG_ONE to song.timeSigOne,
                     SongSQLiteContract.COLUMN_TIME_SIG_TWO to song.timeSigTwo,
-                    SongSQLiteContract.COLUMN_PLAY_DURING_REC to song.playDuringRecording)
+                    SongSQLiteContract.COLUMN_PLAY_DURING_REC to song.playDuringRecording,
+                    SongSQLiteContract.COLUMN_PLAY_METRONOME to song.playMetronome,
+                    SongSQLiteContract.COLUMN_COUNT_IN_BARS to song.countInBars)
         }
 
         trackDb.use {
@@ -70,7 +74,9 @@ class DbManager(private val c: Context){
                     songList[i].bpm,
                     songList[i].timeSigOne,
                     songList[i].timeSigTwo,
-                    songList[i].playDuringRecording))
+                    songList[i].playDuringRecording,
+                    songList[i].playMetronome,
+                    songList[i].countInBars))
         }
 
         return songModel
@@ -151,7 +157,7 @@ class DbManager(private val c: Context){
     fun getSingleSongFromDB(songName: String?) : Model.Song {
 
         val rowParser = classParser<SQLModel.Song>()
-        var song = Model.Song("",0,0,0,0,0,"")
+        var song = Model.Song("",0,0,0,0,0,0,0, 0)
         val name: String = songName.toString()
         songDb.use {
             val currentSong = select(SongSQLiteContract.TABLE_NAME)
@@ -163,7 +169,9 @@ class DbManager(private val c: Context){
                     currentSong.bpm,
                     currentSong.timeSigOne,
                     currentSong.timeSigTwo,
-                    currentSong.playDuringRecording)
+                    currentSong.playDuringRecording,
+                    currentSong.playMetronome,
+                    currentSong.countInBars)
         }
         return song
     }

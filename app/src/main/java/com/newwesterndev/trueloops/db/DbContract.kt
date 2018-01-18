@@ -10,6 +10,8 @@ object SongSQLiteContract{
     val COLUMN_TIME_SIG_ONE = "timeone"
     val COLUMN_TIME_SIG_TWO = "timetwo"
     val COLUMN_PLAY_DURING_REC = "playduring"
+    val COLUMN_PLAY_METRONOME = "playmetro"
+    val COLUMN_COUNT_IN_BARS = "countinbars"
 }
 
 object TrackSQLiteContract{
