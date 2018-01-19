@@ -21,4 +21,20 @@ class Utility {
     fun showToast(context : Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
+
+    companion object {
+        fun deleteTrackFromTrackList(fileName: String?, trackList: ArrayList<Model.Track>): ArrayList<Model.Track>{
+
+            var position = 9999
+
+            for(track: Model.Track in trackList){
+                if(fileName == track.filePath){
+                    position = trackList.indexOf(track)
+                }
+            }
+
+            trackList.removeAt(position)
+            return trackList
+        }
+    }
 }

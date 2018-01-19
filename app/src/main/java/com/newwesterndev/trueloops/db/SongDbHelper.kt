@@ -10,6 +10,7 @@ class SongDbHelper(context: Context): ManagedSQLiteOpenHelper(context, "currents
         db.createTable(SongSQLiteContract.TABLE_NAME, true,
                 SongSQLiteContract.COLUMN_ID to INTEGER + PRIMARY_KEY,
                 SongSQLiteContract.COLUMN_NAME to TEXT,
+                SongSQLiteContract.COLUMN_DATE_CREATED to TEXT,
                 SongSQLiteContract.COLUMN_BARS to INTEGER,
                 SongSQLiteContract.COLUMN_MEASURES to INTEGER,
                 SongSQLiteContract.COLUMN_BPM to INTEGER,

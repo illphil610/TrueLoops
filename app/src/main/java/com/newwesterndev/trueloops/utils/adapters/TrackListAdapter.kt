@@ -1,6 +1,8 @@
 package com.newwesterndev.trueloops.utils.adapters
 
 import android.content.Context
+import android.content.Intent
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import com.newwesterndev.trueloops.BROADCAST_TRACKS_UPDATED
 import com.newwesterndev.trueloops.R
 import com.newwesterndev.trueloops.db.DbManager
 import com.newwesterndev.trueloops.model.Model
@@ -95,7 +98,9 @@ class TrackListAdapter(private val context: Context, private val tracks: ArrayLi
 
                 when(item?.itemId){
                     R.id.tpu_delete_item -> consume {
-                        Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show()
+                        val sendTrack = Intent(BROADCAST_TRACKS_UPDATED)
+                        sendTrack.putExtra("file", currentTrack.filePath)
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(sendTrack)
                     }
                     R.id.tpu_rename_item -> consume {
                         holder.trackName.visibility = View.GONE

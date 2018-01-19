@@ -2,14 +2,14 @@ package com.newwesterndev.trueloops
 
 import android.app.AlertDialog
 import android.app.DialogFragment
+import android.content.*
 import android.support.v4.app.FragmentTransaction
-import android.content.DialogInterface
-import android.content.Intent
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.LinearLayoutManager
 import android.util.DisplayMetrics
 import android.util.Log
@@ -18,6 +18,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.google.gson.Gson
 import com.newwesterndev.trueloops.db.DbManager
 import com.newwesterndev.trueloops.model.Model
@@ -28,6 +29,12 @@ import com.newwesterndev.trueloops.utils.adapters.TrackListAdapter
 import kotlinx.android.synthetic.main.activity_record.*
 import java.io.File
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
+
+const val BROADCAST_TRACKS_UPDATED = "updatetracks"
 
 class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListener,
         MasterTrackFragment.OnFragmentInteractionListener{
@@ -170,7 +177,16 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         mPlayer = null
     }
 
+    override fun onStart() {
+        super.onStart()
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(trackListReceiver, IntentFilter(BROADCAST_TRACKS_UPDATED))
+    }
+
     override fun onStop() {
+
+        LocalBroadcastManager.getInstance(this)
+                .unregisterReceiver(trackListReceiver)
 
         if (mIsRecording) {
             mRecorder?.stop()
@@ -184,11 +200,22 @@ class RecordActivity : AppCompatActivity(), LoopNameDialog.LoopNameDialogListene
         super.onStop()
     }
 
+    private val trackListReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+
+            mTrackArrayList =
+                    Utility.deleteTrackFromTrackList(intent?.getStringExtra("file"), mTrackArrayList)
+            detail_track_list.adapter.notifyDataSetChanged()
+        }
+    }
+
     override fun onDialogPositiveClick(dialogFragment: DialogFragment, loopName: String) {
         val dbManager = DbManager(this)
+        val timeStamp = SimpleDateFormat("MM/dd/yyyy").format(Date())
 
         if(loopName.isNotEmpty() && !dbManager.doesLoopNameExist(loopName)) {
             dbManager.songToDb(Model.Song(loopName,
+                    timeStamp.toString(),
                     mCurrentSong!!.bars,
                     mCurrentSong!!.measures,
                     mCurrentSong!!.bpm,

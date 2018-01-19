@@ -17,6 +17,7 @@ class DbManager(private val c: Context){
             createTable(SongSQLiteContract.TABLE_NAME, true,
                     SongSQLiteContract.COLUMN_ID to INTEGER + PRIMARY_KEY,
                     SongSQLiteContract.COLUMN_NAME to TEXT,
+                    SongSQLiteContract.COLUMN_DATE_CREATED to TEXT,
                     SongSQLiteContract.COLUMN_BARS to INTEGER,
                     SongSQLiteContract.COLUMN_MEASURES to INTEGER,
                     SongSQLiteContract.COLUMN_BPM to INTEGER,
@@ -27,6 +28,7 @@ class DbManager(private val c: Context){
                     SongSQLiteContract.COLUMN_COUNT_IN_BARS to INTEGER)
             insert(SongSQLiteContract.TABLE_NAME,
                     SongSQLiteContract.COLUMN_NAME to song.name,
+                    SongSQLiteContract.COLUMN_DATE_CREATED to song.dateCreated,
                     SongSQLiteContract.COLUMN_BARS to song.bars,
                     SongSQLiteContract.COLUMN_MEASURES to song.measures,
                     SongSQLiteContract.COLUMN_BPM to song.bpm,
@@ -69,6 +71,7 @@ class DbManager(private val c: Context){
 
         for(i in 0 until(songList.size)){
             songModel.add(Model.Song(songList[i].name,
+                    songList[i].dateCreated,
                     songList[i].bars,
                     songList[i].measures,
                     songList[i].bpm,
@@ -157,13 +160,14 @@ class DbManager(private val c: Context){
     fun getSingleSongFromDB(songName: String?) : Model.Song {
 
         val rowParser = classParser<SQLModel.Song>()
-        var song = Model.Song("",0,0,0,0,0,0,0, 0)
+        var song = Model.Song("","",0,0,0,0,0,0,0, 0)
         val name: String = songName.toString()
         songDb.use {
             val currentSong = select(SongSQLiteContract.TABLE_NAME)
                     .whereSimple("(${SongSQLiteContract.COLUMN_NAME} = ?)", name)
                     .parseOpt(rowParser)
             song = Model.Song(currentSong!!.name,
+                    currentSong.dateCreated,
                     currentSong.bars,
                     currentSong.measures,
                     currentSong.bpm,

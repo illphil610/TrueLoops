@@ -9,7 +9,7 @@ class NewSongModule{
 
     @Provides
     fun song(): Model.Song{
-        return Model.Song("New Song", 4, 1, 120, 4, 4,
+        return Model.Song("New Song", "",4, 1, 120, 4, 4,
                 0, 0, 0)
     }
 }

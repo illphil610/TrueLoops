@@ -10,6 +10,8 @@
     <string name="tpu_delete">Delete Track</string>
     <string name="tpu_rename">Rename</string>
 
+    <string name="created">Created: </string>
+
     <string name="track_rec">REC</string>
     <string name="track_play">PLAY</string>
 

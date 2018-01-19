@@ -4,6 +4,7 @@ object SongSQLiteContract{
     val TABLE_NAME = "Songs"
     val COLUMN_ID = "_id"
     val COLUMN_NAME = "name"
+    val COLUMN_DATE_CREATED = "datecreated"
     val COLUMN_BARS = "bars"
     val COLUMN_MEASURES = "measures"
     val COLUMN_BPM = "bpm"

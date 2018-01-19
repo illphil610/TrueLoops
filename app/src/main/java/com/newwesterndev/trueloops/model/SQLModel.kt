@@ -4,6 +4,7 @@ object SQLModel {
 
     data class Song(var id: Int,
                     var name: String,
+                    var dateCreated: String,
                     var bars: Int,
                     var measures: Int,
                     var bpm: Int,

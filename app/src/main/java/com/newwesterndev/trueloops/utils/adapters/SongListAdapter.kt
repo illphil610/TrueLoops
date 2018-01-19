@@ -26,6 +26,9 @@ class SongListAdapter(private val context: Context, private val songs: ArrayList
 
         holder.songName.text = currentSong.name
 
+        val dateString = context.getString(R.string.created) + " " + currentSong.dateCreated
+        holder.dateText.text = dateString
+
         holder.itemLayout.setOnClickListener({_ ->
             val intent = Intent(context, RecordActivity::class.java)
             val i = songs[position].name.toString()
@@ -53,8 +56,8 @@ class SongListAdapter(private val context: Context, private val songs: ArrayList
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val songName = itemView.song_name
-        val songImage = itemView.song_image
         val deleteButton = itemView.delete_loop_button
         val itemLayout = itemView.song_item_layout
+        val dateText = itemView.song_date_text
     }
 }

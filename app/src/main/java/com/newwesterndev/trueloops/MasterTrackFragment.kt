@@ -43,6 +43,7 @@ class MasterTrackFragment : Fragment() {
             if(mt_play_metro_check.isChecked) playMetronome = 1
 
             val songToReturn = Model.Song(mSong.name,
+                    "",
                     mt_bars_edit.text.toString().toInt(),
                     mt_measures_edit.text.toString().toInt(),
                     mt_bpm_edit.text.toString().toInt(),
